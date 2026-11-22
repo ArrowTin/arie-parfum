@@ -122,6 +122,70 @@
   padding-block: var(--space-2xl);
 }
 
+.step-grid {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.step-card {
+  padding: var(--space-lg);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-card);
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-xl);
+  height: var(--space-xl);
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: var(--fw-semibold);
+}
+
+.step-card h3 {
+  margin-top: var(--space-sm);
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+}
+
+.step-card p {
+  margin-top: var(--space-xs);
+  color: var(--color-muted-foreground);
+}
+
+.faq-list {
+  display: grid;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+.faq-item {
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-card);
+}
+
+.faq-item summary {
+  min-height: var(--tap-min);
+  padding: var(--space-md);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+}
+
+.faq-item summary:hover {
+  background: var(--color-muted);
+}
+
+.faq-item p {
+  padding: var(--space-none) var(--space-md) var(--space-md);
+  color: var(--color-muted-foreground);
+}
+
 .gallery-grid {
   display: grid;
   gap: var(--space-md);
@@ -256,6 +320,10 @@
   .gallery-grid,
   .testimoni-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .step-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
