@@ -1,6 +1,7 @@
 import { CONFIG } from "./config.js";
 import { buildWaLink } from "./whatsapp.js";
 import { initCatalog } from "./catalog.js";
+import { initDetail } from "./detail.js";
 
 // Isi teks dari config ke semua elemen penanda.
 function isiPenanda(penanda, nilai) {
@@ -80,4 +81,10 @@ export function initNavigasi() {
 
 initDataUsaha();
 initNavigasi();
-document.querySelectorAll("[data-catalog]").forEach((bagian) => initCatalog(bagian));
+
+const slug = new URLSearchParams(globalThis.location?.search ?? "").get("p");
+if (slug) {
+  initDetail(slug);
+} else {
+  document.querySelectorAll("[data-catalog]").forEach((bagian) => initCatalog(bagian));
+}

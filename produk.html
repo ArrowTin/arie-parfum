@@ -48,9 +48,9 @@
     <section class="catalog-section" data-catalog aria-labelledby="katalog-judul">
       <div class="container">
         <p class="eyebrow" data-config="category">Toko Parfum</p>
-        <h1 id="katalog-judul">Katalog Parfum</h1>
-        <p class="section-intro">Data contoh berlabel "Contoh". Harga belum ditampilkan; tanya langsung via WhatsApp.</p>
-        <div class="catalog-controls">
+        <h1 id="katalog-judul" data-page-judul>Katalog Parfum</h1>
+        <p class="section-intro" data-catalog-intro>Data contoh berlabel "Contoh". Harga belum ditampilkan; tanya langsung via WhatsApp.</p>
+        <div class="catalog-controls" data-catalog-filter>
           <div class="field">
             <label for="cari-katalog">Cari produk</label>
             <input id="cari-katalog" type="search" data-catalog-search placeholder="Nama atau aroma">
@@ -75,6 +75,7 @@
           <a data-wa href="#">Tanya via WhatsApp</a>
           <button class="btn btn-outline" type="button" data-catalog-reset>Atur ulang filter</button>
         </p>
+        <div class="detail-view" data-detail hidden></div>
       </div>
     </section>
   </main>

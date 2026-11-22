@@ -3,7 +3,7 @@ import { filterProducts, loadProducts } from "./products.js";
 import { productInquiryLink } from "./whatsapp.js";
 
 const NAMA_BADGE = { terlaris: "Terlaris", baru: "Baru", promo: "Promo" };
-const NAMA_STOK = { ready: "Ready", habis: "Habis", preorder: "Preorder" };
+export const NAMA_STOK = { ready: "Ready", habis: "Habis", preorder: "Preorder" };
 
 function buat(tag, kelas, teks) {
   const elemen = document.createElement(tag);
@@ -12,7 +12,7 @@ function buat(tag, kelas, teks) {
   return elemen;
 }
 
-function teksHarga(produk) {
+export function formatHarga(produk) {
   if (!CONFIG.features.showPrices || produk.price == null) return "Tanya harga";
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -36,7 +36,7 @@ function buatKartu(produk, namaKategori) {
 
   kartu.append(buat("p", "product-meta", namaKategori));
   kartu.append(buat("p", "product-meta", `Ukuran: ${produk.sizesMl.join(", ")} ml`));
-  kartu.append(buat("p", "product-price", teksHarga(produk)));
+  kartu.append(buat("p", "product-price", formatHarga(produk)));
   kartu.append(buat("p", "product-meta", `Stok: ${NAMA_STOK[produk.stock] ?? produk.stock}`));
 
   const tautan = buat("a", "btn btn-accent", "Tanya / pesan via WA");
