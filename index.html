@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Toko parfum di Bengkayang. Pesan via WhatsApp dan lihat rute ke toko.">
+  <title>Toko Parfum di Bengkayang</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&amp;family=Montserrat:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+</head>
+<body>
+  <a class="skip-link" href="#utama">Lewati ke konten</a>
+
+  <header class="site-header" id="beranda">
+    <div class="container header-inner">
+      <a class="brand" href="#beranda" aria-label="Arie Parfum, kembali ke atas">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <path d="M16 2C11 9 6 14 6 20a10 10 0 0 0 20 0C26 14 21 9 16 2Z"></path>
+        </svg>
+        <span data-config="name">Arie Parfum</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Navigasi utama">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-utama">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M3 6h18M3 12h18M3 18h18"></path>
+          </svg>
+          <span class="visually-hidden">Buka menu</span>
+        </button>
+        <ul class="nav-list" id="menu-utama">
+          <li><a href="#beranda">Beranda</a></li>
+          <li><a href="#keunggulan">Keunggulan</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+        </ul>
+      </nav>
+
+      <a class="btn btn-accent header-wa" data-wa href="#">Pesan via WhatsApp</a>
+    </div>
+  </header>
+
+  <main id="utama">
+    <section class="hero" aria-labelledby="hero-judul">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow" data-config="category">Toko Parfum</p>
+          <h1 id="hero-judul" data-config="name">Arie Parfum</h1>
+          <p class="hero-tagline">Wangi pilihan, buka kapan saja.</p>
+          <p class="hero-desc">Toko parfum di Bengkayang, Kalimantan Barat. Tanya stok dan pesan langsung lewat WhatsApp.</p>
+          <p class="badge" data-hours hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+            <span data-hours-label></span>
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-accent" data-wa href="#">Pesan via WhatsApp</a>
+            <a class="btn btn-outline" data-route href="#" target="_blank" rel="noopener noreferrer">Lihat Rute</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <svg class="botol" viewBox="0 0 240 300" focusable="false">
+            <rect class="botol-tutup" x="94" y="16" width="52" height="34" rx="8"></rect>
+            <path class="botol-badan" d="M75 60h90a18 18 0 0 1 18 18v172a26 26 0 0 1-26 26H83a26 26 0 0 1-26-26V78a18 18 0 0 1 18-18Z"></path>
+            <rect class="botol-label" x="78" y="142" width="84" height="70" rx="6"></rect>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="keunggulan" aria-labelledby="fitur-judul">
+      <div class="container">
+        <h2 id="fitur-judul" class="section-title">Kenapa belanja di sini</h2>
+        <p class="section-intro">Informasi singkat sebelum kamu menghubungi toko.</p>
+        <ul class="feature-grid">
+          <li class="feature-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+            <h3 data-hours-label>Buka kapan saja</h3>
+            <p data-hours-desc>Jam buka mengikuti data yang tersedia; konfirmasi lewat WhatsApp.</p>
+          </li>
+          <li class="feature-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 5h16v11H8l-4 4V5Z"></path></svg>
+            <h3>Pesan via WhatsApp</h3>
+            <p>Tanya stok dan pesan langsung dari ponsel, tanpa formulir panjang.</p>
+          </li>
+          <li class="feature-card">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+            <h3>Lokasi mudah ditemukan</h3>
+            <p data-config="street"></p>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="kontak">
+    <div class="container footer-grid">
+      <div>
+        <h2 class="footer-title" data-config="name">Arie Parfum</h2>
+        <p data-config="address"></p>
+      </div>
+      <div>
+        <h2 class="footer-title">Menu cepat</h2>
+        <ul class="footer-links">
+          <li><a href="#beranda">Beranda</a></li>
+          <li><a href="#keunggulan">Keunggulan</a></li>
+          <li><a data-wa href="#">Tanya via WhatsApp</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="footer-title">Kontak</h2>
+        <p data-config="phone"></p>
+        <a class="footer-route" data-route href="#" target="_blank" rel="noopener noreferrer">Buka peta &amp; rute</a>
+      </div>
+    </div>
+    <p class="footer-bottom">© <span data-year></span> <span data-config="name"></span>. Toko parfum di Bengkayang.</p>
+  </footer>
+
+  <a class="fab-wa" data-wa href="#" aria-label="Pesan via WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z"></path><path d="M9 8c0 4 2.5 6.5 6.5 6.5l1.5-1.8-2-1-1 1a5 5 0 0 1-2-2l1-1-1-2-3 .5Z"></path></svg>
+  </a>
+
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
