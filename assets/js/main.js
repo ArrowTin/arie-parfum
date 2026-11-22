@@ -60,6 +60,43 @@ export function initDataUsaha() {
   }
 }
 
+// SEO: canonical, og:url, dan JSON-LD diisi dari config saat halaman dimuat.
+export function initSeo() {
+  const lokasi = globalThis.location;
+  const url = lokasi && /^https?:$/.test(lokasi.protocol)
+    ? `${lokasi.origin}${lokasi.pathname}`
+    : "";
+
+  if (url) {
+    const canonical = document.querySelector("[data-canonical]");
+    if (canonical) canonical.href = url;
+    document.querySelectorAll("[data-og-url]").forEach((elemen) => {
+      elemen.setAttribute("content", url);
+    });
+  }
+
+  const data = document.querySelector("[data-jsonld]");
+  if (!data) return;
+  const a = CONFIG.business.address;
+  data.textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Store",
+    name: CONFIG.business.name,
+    description: "Toko parfum di Bengkayang, Kalimantan Barat.",
+    url,
+    telephone: `+${CONFIG.business.waNumber}`,
+    hasMap: CONFIG.business.mapsUrl,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: a.street,
+      addressLocality: a.village,
+      addressRegion: `${a.district}, ${a.regency}, ${a.province}`,
+      postalCode: a.postalCode,
+      addressCountry: "ID",
+    },
+  });
+}
+
 // Menu mobile: tombol membuka/ menutup daftar nav.
 export function initNavigasi() {
   const tombol = document.querySelector(".nav-toggle");
@@ -87,6 +124,7 @@ export function initNavigasi() {
 }
 
 initDataUsaha();
+initSeo();
 initNavigasi();
 
 const slug = new URLSearchParams(globalThis.location?.search ?? "").get("p");

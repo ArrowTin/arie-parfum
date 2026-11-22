@@ -1,0 +1,4 @@
+# Contoh: ganti https://example.com/ dengan domain situs saat deploy.
+User-agent: *
+Allow: /
+Sitemap: https://example.com/sitemap.xml
