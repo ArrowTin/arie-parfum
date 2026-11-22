@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Lihat katalog parfum Arie Parfum di Bengkayang dan tanya stok lewat WhatsApp.">
+  <title data-page-title>Katalog Parfum</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&amp;family=Montserrat:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+  <a class="skip-link" href="#utama">Lewati ke konten</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Arie Parfum, ke beranda">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <path d="M16 2C11 9 6 14 6 20a10 10 0 0 0 20 0C26 14 21 9 16 2Z"></path>
+        </svg>
+        <span data-config="name">Arie Parfum</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Navigasi utama">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-katalog">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M3 6h18M3 12h18M3 18h18"></path>
+          </svg>
+          <span class="visually-hidden">Buka menu</span>
+        </button>
+        <ul class="nav-list" id="menu-katalog">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="produk.html" aria-current="page">Katalog</a></li>
+          <li><a href="index.html#keunggulan">Keunggulan</a></li>
+          <li><a href="index.html#kontak">Kontak</a></li>
+        </ul>
+      </nav>
+
+      <a class="btn btn-accent header-wa" data-wa href="#">Pesan via WhatsApp</a>
+    </div>
+  </header>
+
+  <main id="utama">
+    <section class="catalog-section" data-catalog aria-labelledby="katalog-judul">
+      <div class="container">
+        <p class="eyebrow" data-config="category">Toko Parfum</p>
+        <h1 id="katalog-judul">Katalog Parfum</h1>
+        <p class="section-intro">Data contoh berlabel "Contoh". Harga belum ditampilkan; tanya langsung via WhatsApp.</p>
+        <div class="catalog-controls">
+          <div class="field">
+            <label for="cari-katalog">Cari produk</label>
+            <input id="cari-katalog" type="search" data-catalog-search placeholder="Nama atau aroma">
+          </div>
+          <div class="field">
+            <label for="kategori-katalog">Kategori</label>
+            <select id="kategori-katalog" data-catalog-category><option value="">Semua kategori</option></select>
+          </div>
+          <div class="field">
+            <label for="badge-katalog">Label</label>
+            <select id="badge-katalog" data-catalog-badge>
+              <option value="">Semua label</option>
+              <option value="terlaris">Terlaris</option>
+              <option value="baru">Baru</option>
+              <option value="promo">Promo</option>
+            </select>
+          </div>
+        </div>
+        <div class="product-grid" data-catalog-grid></div>
+        <p class="catalog-empty" data-catalog-empty role="status" hidden>
+          <span data-catalog-pesan></span>
+          <a data-wa href="#">Tanya via WhatsApp</a>
+          <button class="btn btn-outline" type="button" data-catalog-reset>Atur ulang filter</button>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="kontak">
+    <div class="container footer-grid">
+      <div>
+        <h2 class="footer-title" data-config="name">Arie Parfum</h2>
+        <p data-config="address"></p>
+      </div>
+      <div>
+        <h2 class="footer-title">Menu cepat</h2>
+        <ul class="footer-links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="produk.html">Katalog</a></li>
+          <li><a data-wa href="#">Tanya via WhatsApp</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="footer-title">Kontak</h2>
+        <p data-config="phone"></p>
+        <a class="footer-route" data-route href="#" target="_blank" rel="noopener noreferrer">Buka peta &amp; rute</a>
+      </div>
+    </div>
+    <p class="footer-bottom">© <span data-year></span> <span data-config="name"></span>. Toko parfum di Bengkayang.</p>
+  </footer>
+
+  <a class="fab-wa" data-wa href="#" aria-label="Pesan via WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z"></path><path d="M9 8c0 4 2.5 6.5 6.5 6.5l1.5-1.8-2-1-1 1a5 5 0 0 1-2-2l1-1-1-2-3 .5Z"></path></svg>
+  </a>
+
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

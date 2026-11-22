@@ -4,13 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Toko parfum di Bengkayang. Pesan via WhatsApp dan lihat rute ke toko.">
-  <title>Toko Parfum di Bengkayang</title>
+  <title data-page-title>Toko Parfum di Bengkayang</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&amp;family=Montserrat:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
 </head>
 <body>
   <a class="skip-link" href="#utama">Lewati ke konten</a>
@@ -34,6 +35,7 @@
         <ul class="nav-list" id="menu-utama">
           <li><a href="#beranda">Beranda</a></li>
           <li><a href="#keunggulan">Keunggulan</a></li>
+          <li><a href="#katalog">Katalog</a></li>
           <li><a href="#kontak">Kontak</a></li>
         </ul>
       </nav>
@@ -92,6 +94,39 @@
         </ul>
       </div>
     </section>
+
+    <section class="catalog-section" id="katalog" data-catalog aria-labelledby="katalog-judul">
+      <div class="container">
+        <h2 id="katalog-judul" class="section-title">Katalog ringkas</h2>
+        <p class="section-intro">Data contoh berlabel "Contoh". Harga belum ditampilkan; tanya langsung via WhatsApp.</p>
+        <div class="catalog-controls">
+          <div class="field">
+            <label for="cari-beranda">Cari produk</label>
+            <input id="cari-beranda" type="search" data-catalog-search placeholder="Nama atau aroma">
+          </div>
+          <div class="field">
+            <label for="kategori-beranda">Kategori</label>
+            <select id="kategori-beranda" data-catalog-category><option value="">Semua kategori</option></select>
+          </div>
+          <div class="field">
+            <label for="badge-beranda">Label</label>
+            <select id="badge-beranda" data-catalog-badge>
+              <option value="">Semua label</option>
+              <option value="terlaris">Terlaris</option>
+              <option value="baru">Baru</option>
+              <option value="promo">Promo</option>
+            </select>
+          </div>
+        </div>
+        <div class="product-grid" data-catalog-grid></div>
+        <p class="catalog-empty" data-catalog-empty role="status" hidden>
+          <span data-catalog-pesan></span>
+          <a data-wa href="#">Tanya via WhatsApp</a>
+          <button class="btn btn-outline" type="button" data-catalog-reset>Atur ulang filter</button>
+        </p>
+        <p class="catalog-more"><a class="btn btn-outline" href="produk.html">Lihat katalog lengkap</a></p>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer" id="kontak">
@@ -105,6 +140,7 @@
         <ul class="footer-links">
           <li><a href="#beranda">Beranda</a></li>
           <li><a href="#keunggulan">Keunggulan</a></li>
+          <li><a href="#katalog">Katalog</a></li>
           <li><a data-wa href="#">Tanya via WhatsApp</a></li>
         </ul>
       </div>

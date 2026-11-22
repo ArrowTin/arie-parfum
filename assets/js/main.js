@@ -1,5 +1,6 @@
 import { CONFIG } from "./config.js";
 import { buildWaLink } from "./whatsapp.js";
+import { initCatalog } from "./catalog.js";
 
 // Isi teks dari config ke semua elemen penanda.
 function isiPenanda(penanda, nilai) {
@@ -16,7 +17,9 @@ function alamatLengkap() {
 }
 
 export function initDataUsaha() {
-  document.title = `${CONFIG.business.name} — Toko Parfum di Bengkayang`;
+  const judulHalaman = document.querySelector("[data-page-title]")?.textContent?.trim() ||
+    "Toko Parfum di Bengkayang";
+  document.title = `${CONFIG.business.name} — ${judulHalaman}`;
   isiPenanda("name", CONFIG.business.name);
   isiPenanda("category", CONFIG.business.category);
   isiPenanda("street", CONFIG.business.address.street);
@@ -77,3 +80,4 @@ export function initNavigasi() {
 
 initDataUsaha();
 initNavigasi();
+document.querySelectorAll("[data-catalog]").forEach((bagian) => initCatalog(bagian));

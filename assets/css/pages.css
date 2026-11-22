@@ -1,0 +1,131 @@
+/* Gaya khusus halaman katalog dan detail. */
+.catalog-section {
+  padding-block: var(--space-2xl);
+}
+
+.catalog-controls {
+  display: grid;
+  gap: var(--space-md);
+  margin-block: var(--space-lg);
+}
+
+.field {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.field label {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: var(--space-sm) var(--space-md);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  color: var(--color-foreground);
+  font: inherit;
+}
+
+.product-grid {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.product-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-sm);
+}
+
+.product-card h3 {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+}
+
+.product-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.product-badge {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  background: var(--color-muted);
+  color: var(--color-foreground);
+  font-size: var(--text-xs);
+}
+
+.product-meta {
+  color: var(--color-muted-foreground);
+  font-size: var(--text-sm);
+}
+
+.product-price {
+  font-weight: var(--fw-semibold);
+}
+
+.product-card .btn {
+  margin-top: auto;
+}
+
+.catalog-empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+  padding: var(--space-lg);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-card);
+  text-align: center;
+}
+
+.catalog-empty[hidden] {
+  display: none;
+}
+
+.catalog-empty a {
+  min-height: var(--tap-min);
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: var(--space-xs);
+}
+
+.catalog-more {
+  margin-top: var(--space-lg);
+  text-align: center;
+}
+
+@media (min-width: 48rem) {
+  .catalog-controls {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
