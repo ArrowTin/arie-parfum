@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "categories": [
+    { "id": "pria", "name": "Parfum Pria", "slug": "pria", "order": 1 },
+    { "id": "wanita", "name": "Parfum Wanita", "slug": "wanita", "order": 2 }
+  ],
+  "products": [
+    {
+      "id": "p001",
+      "slug": "contoh-parfum-1",
+      "name": "Contoh Parfum 1",
+      "categoryId": "pria",
+      "description": "Data contoh untuk mencoba tampilan katalog. Ganti dengan deskripsi produk sebenarnya.",
+      "sizesMl": [30, 60],
+      "price": null,
+      "currency": "IDR",
+      "stock": "ready",
+      "badges": [],
+      "notes": { "top": [], "middle": [], "base": [] },
+      "images": [],
+      "isSample": true,
+      "active": true
+    },
+    {
+      "id": "p002",
+      "slug": "contoh-parfum-2",
+      "name": "Contoh Parfum 2",
+      "categoryId": "pria",
+      "description": "Data contoh untuk mencoba filter kategori. Ganti dengan deskripsi produk sebenarnya.",
+      "sizesMl": [30, 60, 100],
+      "price": null,
+      "currency": "IDR",
+      "stock": "preorder",
+      "badges": ["baru"],
+      "notes": { "top": [], "middle": [], "base": [] },
+      "images": [],
+      "isSample": true,
+      "active": true
+    },
+    {
+      "id": "p003",
+      "slug": "contoh-parfum-3",
+      "name": "Contoh Parfum 3",
+      "categoryId": "wanita",
+      "description": "Data contoh untuk mencoba pencarian. Ganti dengan deskripsi produk sebenarnya.",
+      "sizesMl": [30, 60],
+      "price": null,
+      "currency": "IDR",
+      "stock": "ready",
+      "badges": [],
+      "notes": { "top": [], "middle": [], "base": [] },
+      "images": [],
+      "isSample": true,
+      "active": true
+    },
+    {
+      "id": "p004",
+      "slug": "contoh-parfum-4",
+      "name": "Contoh Parfum 4",
+      "categoryId": "wanita",
+      "description": "Data contoh untuk mencoba tampilan detail. Ganti dengan deskripsi produk sebenarnya.",
+      "sizesMl": [50],
+      "price": null,
+      "currency": "IDR",
+      "stock": "habis",
+      "badges": [],
+      "notes": { "top": [], "middle": [], "base": [] },
+      "images": [],
+      "isSample": true,
+      "active": true
+    }
+  ]
+}
