@@ -1,0 +1,31 @@
+# === Lokal saja (tidak dipublikasikan) ===
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+APPROVALS.md
+_PANDUAN-PENGGUNA/
+PROJECT_SPEC.md
+TASKS.md
+PROGRESS.md
+docs/
+design-system/
+opencode.json
+opencode.jsonc
+.opencode/
+.agents/
+.claude/
+graphify-out/
+
+# === Secret & kredensial ===
+.env
+.env.*
+*.pem
+*.key
+secrets/
+credentials*.json
+
+# === Umum ===
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
