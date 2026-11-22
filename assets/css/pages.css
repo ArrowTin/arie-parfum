@@ -122,6 +122,18 @@
   padding-block: var(--space-2xl);
 }
 
+.notfound {
+  display: grid;
+  align-content: center;
+  gap: var(--space-md);
+  min-height: 60vh;
+  padding-block: var(--space-3xl);
+}
+
+.notfound h1 {
+  font-size: var(--text-3xl);
+}
+
 .contact-grid {
   display: grid;
   gap: var(--space-md);
