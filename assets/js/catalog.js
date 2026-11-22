@@ -21,7 +21,7 @@ export function formatHarga(produk) {
   }).format(produk.price);
 }
 
-function buatKartu(produk, namaKategori) {
+export function buatKartu(produk, namaKategori) {
   const kartu = buat("article", "product-card");
   const kepala = buat("div", "product-head");
   kepala.append(buat("h3", undefined, produk.name));

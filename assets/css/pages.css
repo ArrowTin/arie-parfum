@@ -114,6 +114,10 @@
   text-align: center;
 }
 
+.promo-section {
+  background: var(--color-muted);
+}
+
 .detail-view {
   margin-top: var(--space-lg);
 }

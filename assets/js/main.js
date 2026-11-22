@@ -2,6 +2,7 @@ import { CONFIG } from "./config.js";
 import { buildWaLink } from "./whatsapp.js";
 import { initCatalog } from "./catalog.js";
 import { initDetail } from "./detail.js";
+import { initPromo } from "./promo.js";
 
 // Isi teks dari config ke semua elemen penanda.
 function isiPenanda(penanda, nilai) {
@@ -88,3 +89,5 @@ if (slug) {
 } else {
   document.querySelectorAll("[data-catalog]").forEach((bagian) => initCatalog(bagian));
 }
+
+initPromo();
