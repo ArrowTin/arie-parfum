@@ -60,6 +60,25 @@ export function initDataUsaha() {
   }
 }
 
+// Gerak masuk viewport: hanya dipasang bila didukung dan pengguna tidak meminta reduced-motion.
+export function initGerak() {
+  if (!("IntersectionObserver" in globalThis)) return;
+  if (globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+  const pengamat = new IntersectionObserver((entri) => {
+    entri.forEach((butir) => {
+      if (!butir.isIntersecting) return;
+      butir.target.classList.add("is-visible");
+      pengamat.unobserve(butir.target);
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll("main > section:not([hidden]):not(.hero)").forEach((bagian) => {
+    bagian.classList.add("reveal");
+    pengamat.observe(bagian);
+  });
+}
+
 // SEO: canonical, og:url, dan JSON-LD diisi dari config saat halaman dimuat.
 export function initSeo() {
   const lokasi = globalThis.location;
@@ -136,3 +155,4 @@ if (slug) {
 
 initPromo();
 initKontenTambahan();
+initGerak();

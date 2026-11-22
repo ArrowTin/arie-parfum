@@ -55,6 +55,22 @@
   color: var(--color-on-primary);
 }
 
+.btn:active {
+  transform: translateY(var(--motion-shift));
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--motion-shift));
+  transition: opacity var(--motion-slow) var(--ease-out),
+    transform var(--motion-slow) var(--ease-out);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
 .site-header {
   position: sticky;
   top: var(--space-none);

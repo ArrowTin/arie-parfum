@@ -112,6 +112,13 @@ test("beranda lokal di bawah 1 MB (font eksternal tidak dihitung)", async () => 
   assert.ok(total < 1024 * 1024, `total beranda ${total} byte melebihi 1 MB`);
 });
 
+test("gerak masuk viewport melewati hero dan menghormati reduced-motion", async () => {
+  const js = await baca("../assets/js/main.js");
+  assert.match(js, /prefers-reduced-motion: reduce/);
+  assert.match(js, /:not\(\.hero\)/);
+  assert.match(js, /IntersectionObserver/);
+});
+
 test("semua tautan eksternal memakai rel noopener noreferrer", async () => {
   for (const halaman of HALAMAN) {
     const html = await baca(halaman);
