@@ -41,6 +41,11 @@ export function initDataUsaha() {
     elemen.href = CONFIG.business.mapsUrl;
   });
 
+  document.querySelectorAll("[data-tel]").forEach((elemen) => {
+    elemen.href = `tel:+${CONFIG.business.waNumber}`;
+    elemen.textContent = CONFIG.business.phoneDisplay;
+  });
+
   // Jam 24 jam berlabel [?]: tampil sesuai flag, tetap mengajak konfirmasi.
   if (CONFIG.business.hours.is24h) {
     document.querySelectorAll("[data-hours]").forEach((elemen) => {

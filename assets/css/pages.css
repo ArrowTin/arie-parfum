@@ -122,6 +122,58 @@
   padding-block: var(--space-2xl);
 }
 
+.contact-grid {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+.contact-card,
+.map-card {
+  margin: var(--space-none);
+  padding: var(--space-lg);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-card);
+}
+
+.contact-card h3 {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+}
+
+.contact-card p {
+  margin-top: var(--space-sm);
+  color: var(--color-muted-foreground);
+}
+
+.contact-card a[data-tel] {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: var(--space-xs);
+}
+
+.map-card svg {
+  width: var(--space-3xl);
+  height: var(--space-3xl);
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.map-card figcaption {
+  margin-top: var(--space-sm);
+  color: var(--color-muted-foreground);
+}
+
+.map-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
 .step-grid {
   display: grid;
   gap: var(--space-md);
@@ -324,6 +376,10 @@
 
   .step-grid {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  .contact-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
