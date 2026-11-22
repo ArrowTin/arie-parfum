@@ -3,6 +3,7 @@ import { buildWaLink } from "./whatsapp.js";
 import { initCatalog } from "./catalog.js";
 import { initDetail } from "./detail.js";
 import { initPromo } from "./promo.js";
+import { initKontenTambahan } from "./content.js";
 
 // Isi teks dari config ke semua elemen penanda.
 function isiPenanda(penanda, nilai) {
@@ -91,3 +92,4 @@ if (slug) {
 }
 
 initPromo();
+initKontenTambahan();

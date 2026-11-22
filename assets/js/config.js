@@ -17,6 +17,9 @@ export const CONFIG = {
     mapsUrl: "https://maps.app.goo.gl/d6wrRSZdUt7naff59",
     hours: { is24h: true }, // [?] perlu konfirmasi pemilik
     social: { instagram: null, facebook: null, tiktok: null },
+    about: null, // [?] cerita toko belum disiapkan
+    gallery: [], // [?] foto belum ada/izin belum ada
+    testimonials: [], // [?] kutipan pelanggan belum diizinkan
   },
   features: {
     showPrices: false, // [?] harga belum ditentukan
