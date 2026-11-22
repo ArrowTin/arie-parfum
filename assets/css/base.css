@@ -1,0 +1,115 @@
+/* Gaya dasar: reset ringan + aturan aksesibilitas. Semua nilai visual memakai token. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: var(--space-none);
+  min-width: var(--space-none);
+  overflow-wrap: break-word;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--leading-normal);
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote {
+  margin: var(--space-none);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  line-height: var(--leading-tight);
+  text-wrap: balance;
+}
+
+ul,
+ol {
+  margin: var(--space-none);
+  padding: var(--space-none);
+  list-style: none;
+}
+
+img,
+picture,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+a {
+  color: var(--color-current);
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: var(--color-current);
+}
+
+button {
+  cursor: pointer;
+  border: var(--border-none);
+  background: var(--color-transparent);
+}
+
+:focus-visible {
+  outline: var(--focus-width) solid var(--color-ring);
+  outline-offset: var(--focus-offset);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.container {
+  width: min(100% - var(--space-lg) * 2, var(--container-max));
+  margin-inline: auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: var(--space-none);
+  height: var(--space-none);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: var(--motion-none) !important;
+    animation-duration: var(--motion-none) !important;
+    animation-iteration-count: 1 !important;
+  }
+}
