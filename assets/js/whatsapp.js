@@ -10,8 +10,9 @@ export function buildWaLink(text = CONFIG.wa.general) {
 export function productInquiryLink(product, sizeMl) {
   const nama = product?.name ?? "";
   const ukuran = sizeMl ?? product?.sizesMl?.[0] ?? "";
+  // Replacer fungsi mencegah pola seperti "$&" pada nama mengubah template.
   const pesan = CONFIG.wa.product
-    .replace("{nama}", nama)
-    .replace("{ukuran}", String(ukuran));
+    .replace("{nama}", () => nama)
+    .replace("{ukuran}", () => String(ukuran));
   return buildWaLink(pesan);
 }

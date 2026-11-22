@@ -33,3 +33,11 @@ test("productInquiryLink menerima ukuran pilihan", () => {
   const url = new URL(productInquiryLink({ name: "Contoh A", sizesMl: [30] }, 60));
   assert.match(url.searchParams.get("text"), /Contoh A \(60\)/);
 });
+
+test("karakter $ pada nama tidak mengubah template pesan", () => {
+  const nama = "Contoh $& $` $' Parfum";
+  const url = new URL(productInquiryLink({ name: nama, sizesMl: [30] }));
+  assert.equal(url.searchParams.get("text"), CONFIG.wa.product
+    .replace("{nama}", () => nama)
+    .replace("{ukuran}", () => "30"));
+});
