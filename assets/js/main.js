@@ -181,6 +181,18 @@ export function initSeo() {
   });
 }
 
+// Kaca header mengeras halus setelah pengguna menggulir.
+export function initChrome() {
+  const header = document.querySelector(".site-header");
+  if (!header) return;
+  const batas = 8;
+  const perbarui = () => {
+    header.classList.toggle("is-scrolled", (globalThis.scrollY ?? 0) > batas);
+  };
+  perbarui();
+  globalThis.addEventListener?.("scroll", perbarui, { passive: true });
+}
+
 // Menu mobile: tombol membuka/ menutup daftar nav.
 export function initNavigasi() {
   const tombol = document.querySelector(".nav-toggle");
@@ -209,6 +221,7 @@ export function initNavigasi() {
 
 initDataUsaha();
 initSeo();
+initChrome();
 initNavigasi();
 
 const slug = new URLSearchParams(globalThis.location?.search ?? "").get("p");

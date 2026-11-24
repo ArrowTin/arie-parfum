@@ -1,14 +1,15 @@
-# Komponen tombol Uiverse (MIT)
+# Komponen Uiverse (MIT)
 
-Tiga varian tombol pada `components.css` diadaptasi dari karya berikut di https://uiverse.io/ :
+Tiga varian tombol dan bingkai kaca chrome pada `components.css` diadaptasi dari karya berikut di https://uiverse.io/ :
 
 - `btn-wa` — https://uiverse.io/milegelu/tough-cobra-42 (Button oleh 迷了个路)
 - `btn-route` — https://uiverse.io/aguerquin/pretty-bat-39 (Button oleh Alexis Guerquin)
 - `btn-card` — https://uiverse.io/mahiatlinux/proud-quail-76 (Button oleh Maheswar Kumar)
+- `.chrome-bg` / `.chrome-blob` — https://uiverse.io/dylanharriscameron/stupid-mole-90 (Card oleh Dylan)
 
 Seluruh karya UI di Uiverse dirilis di bawah MIT License:
 
-Copyright (c) 2026 milegelu (迷了个路), Alexis Guerquin, Maheswar Kumar
+Copyright (c) 2026 milegelu (迷了个路), Alexis Guerquin, Maheswar Kumar, dylanharriscameron (Dylan)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
