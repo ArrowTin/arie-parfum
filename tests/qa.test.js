@@ -257,7 +257,10 @@ test("galeri setengah cincin menampilkan lima foto berlabel Contoh", async () =>
   assert.match(config, /gallery: true/);
   assert.match(config, /id: "contoh-5"/);
   assert.match(config, /label: "Contoh"/);
-  assert.match(content, /-160 \+ indeks \* busur/);
+  assert.match(content, /180 \/ Math\.max\(jumlah - 1, 1\)/);
+  assert.match(content, /Math\.sin\(rad\) \* lebar \* 0\.27/);
+  assert.match(content, /rotateY\(\$\{miring\}deg\)/);
+  assert.match(content, /ResizeObserver/);
   assert.match(content, /gallery-trigger/);
   assert.match(content, /geserFokus/);
   assert.match(content, /pointerup/);
@@ -268,7 +271,9 @@ test("galeri setengah cincin menampilkan lima foto berlabel Contoh", async () =>
   assert.match(html, /data-galeri-putar="-1"/);
   assert.match(css, /aspect-ratio: 34 \/ 22/);
   assert.match(css, /clamp\(8rem, 34vw, 12rem\)/);
-  assert.match(css, /\.gallery-ring\.is-animasi > li\.is-utama/);
+  assert.match(css, /perspective: 60rem/);
+  assert.match(css, /\.gallery-ring\.is-animasi > li\.is-utama \{/);
+  assert.match(css, /transition: transform 620ms var\(--ease-glide\)/);
   assert.match(css, /\.gallery-ring\.tanpa-gerak/);
   assert.match(ilustrasi, /var\(--color-accent\)/);
   assert.doesNotMatch(ilustrasi, /#[0-9a-fA-F]{3,8}\b/);

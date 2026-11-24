@@ -41,18 +41,15 @@ function media(item) {
   return item.src ? gambar(item) : ilustrasi(item);
 }
 
-// Setengah cincin menampilkan semua foto; kontrol menggeser fokus, bukan menyembunyikan kartu.
+// Dial setengah lingkaran: arc 180°, kartu tegak, busur membalik ke bawah.
 function initGaleriRing(galeri, data, cincin) {
   const kendali = galeri.querySelector("[data-galeri-kendali]");
   const status = galeri.querySelector("[data-galeri-status]");
   const jumlah = data.length;
-  const busur = 140 / Math.max(jumlah - 1, 1);
+  const langkah = 180 / Math.max(jumlah - 1, 1);
 
-  const kartu = data.map((item, indeks) => {
+  const kartu = data.map((item) => {
     const baris = buat("li", "gallery-card is-tampak");
-    const rad = ((-160 + indeks * busur) * Math.PI) / 180;
-    baris.style.setProperty("--x", `${(Math.cos(rad) * 26).toFixed(2)}%`);
-    baris.style.setProperty("--y", `${(Math.sin(rad) * 16).toFixed(2)}%`);
     const tombol = buat("button", "gallery-trigger");
     tombol.type = "button";
     tombol.setAttribute("aria-label", `Perbesar ${item.alt ?? "ilustrasi contoh"}`);
@@ -63,25 +60,49 @@ function initGaleriRing(galeri, data, cincin) {
   cincin.append(...kartu);
 
   let fokus = 0;
-  const perbaruiFokus = () => {
+  let lebar = cincin.clientWidth;
+  let tinggi = cincin.clientHeight;
+
+  // Semua posisi memakai transform, sehingga pergantian fokus tetap di GPU.
+  const tata = () => {
+    lebar = cincin.clientWidth || lebar;
+    tinggi = cincin.clientHeight || tinggi;
     kartu.forEach((baris, indeks) => {
-      baris.classList.toggle("is-utama", indeks === fokus);
+      let jarak = indeks - fokus;
+      if (jarak > jumlah / 2) jarak -= jumlah;
+      if (jarak < -jumlah / 2) jarak += jumlah;
+      const rad = (jarak * langkah * Math.PI) / 180;
+      const x = Math.sin(rad) * lebar * 0.27;
+      const y = (1 - Math.cos(rad)) * tinggi * 0.18;
+      const skala = 1.06 - Math.abs(jarak) * 0.17;
+      const miring = -jarak * 11;
+      const miringZ = jarak * -3;
+      baris.style.transform = `translate3d(calc(${x.toFixed(1)}px - 50%), calc(${y.toFixed(1)}px - 50%), 0) rotateZ(${miringZ}deg) rotateY(${miring}deg) scale(${skala.toFixed(2)})`;
+      baris.style.opacity = (1 - Math.abs(jarak) * 0.14).toFixed(2);
+      baris.style.zIndex = String(10 - Math.abs(jarak));
+      baris.classList.toggle("is-utama", jarak === 0);
     });
     if (status) status.textContent = `Foto ${fokus + 1} dari ${jumlah}`;
   };
-  perbaruiFokus();
 
   if (!bisaGerak()) {
     cincin.classList.add("tanpa-gerak");
     cincin.removeAttribute("tabindex");
     if (kendali) kendali.hidden = true;
+    if (status) status.textContent = `Foto 1 dari ${jumlah}`;
     return;
   }
 
+  tata();
   cincin.classList.add("is-animasi");
+  if ("ResizeObserver" in globalThis) {
+    new ResizeObserver(tata).observe(cincin);
+  } else {
+    globalThis.addEventListener("resize", tata);
+  }
   const geserFokus = (arah) => {
     fokus = ((fokus + arah) % jumlah + jumlah) % jumlah;
-    perbaruiFokus();
+    tata();
   };
 
   kendali?.querySelectorAll("[data-galeri-putar]").forEach((tombol) => {

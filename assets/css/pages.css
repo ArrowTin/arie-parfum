@@ -531,6 +531,7 @@
   margin-inline: auto;
   overflow: hidden;
   border-radius: var(--radius-xl);
+  perspective: 60rem;
   touch-action: pan-y;
 }
 
@@ -542,20 +543,19 @@
 
 .gallery-ring > li {
   position: absolute;
-  left: calc(50% + var(--x));
-  top: calc(50% + var(--y));
+  left: 50%;
+  top: 50%;
   z-index: 1;
   width: clamp(8rem, 34vw, 12rem);
-  translate: -50% -50%;
-  transform: scale(1);
   transform-origin: 50% 50%;
-  transition: transform var(--motion-slow) var(--ease-glide),
+  transform-style: preserve-3d;
+  transform: translate3d(-50%, -50%, 0);
+  transition: transform 620ms var(--ease-glide),
     opacity var(--motion-base) var(--ease-out);
 }
 
 .gallery-ring.is-animasi > li.is-utama {
-  z-index: 2;
-  transform: scale(1.06);
+  border-color: var(--color-accent);
 }
 
 .gallery-ring.is-menyeret > li {
@@ -745,7 +745,7 @@
 .gallery-ring.tanpa-gerak > li {
   position: static;
   width: auto;
-  translate: none;
+  transform: none;
   opacity: 1;
   pointer-events: auto;
 }
