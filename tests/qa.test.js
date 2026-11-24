@@ -123,6 +123,18 @@ test("tilt flacon hanya aktif pada pointer halus dan menghormati reduced-motion"
   assert.doesNotMatch(js, /classList\.add\("reveal"\)/);
 });
 
+test("kartu katalog memakai flip card dengan sisi depan judul saja", async () => {
+  const js = await baca("../assets/js/catalog.js");
+  const css = await baca("../assets/css/pages.css");
+  assert.match(js, /"product-card flip-card"/);
+  assert.match(js, /aria-expanded/);
+  assert.match(js, /aria-hidden/);
+  assert.match(js, /createElementNS/);
+  assert.match(js, /rel = "noopener noreferrer"/);
+  assert.match(css, /transform: rotateY\(180deg\)/);
+  assert.match(css, /backface-visibility: hidden/);
+});
+
 test("tutup botol dan aroma dapat dikendalikan dengan keyboard", async () => {
   const html = await baca("../index.html");
   const js = await baca("../assets/js/main.js");
