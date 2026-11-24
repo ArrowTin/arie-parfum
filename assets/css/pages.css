@@ -34,6 +34,18 @@
 .product-grid {
   display: grid;
   gap: var(--space-md);
+  /* Ruang disiapkan sebelum kartu dirender agar footer tidak bergeser. */
+  min-height: 87rem;
+}
+
+/* Rute detail memakai ruang yang sama saat grid disembunyikan. */
+:root[data-detail-route] .product-grid,
+:root[data-detail-route] .detail-view:not([hidden]) {
+  min-height: 32rem;
+}
+
+:root[data-detail-route] #utama {
+  height: 43rem;
 }
 
 /* Flip card: depan hanya ilustrasi + judul, belakang berisi detail. */
@@ -879,6 +891,16 @@
 
   .product-grid {
     grid-template-columns: repeat(3, 1fr);
+    min-height: 43rem;
+  }
+
+  :root[data-detail-route] .product-grid,
+  :root[data-detail-route] .detail-view:not([hidden]) {
+    min-height: 29rem;
+  }
+
+  :root[data-detail-route] #utama {
+    height: 40rem;
   }
 
   .detail-gallery {

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 
 const baca = (path) => readFile(new URL(path, import.meta.url), "utf8");
 const HALAMAN = ["../index.html", "../produk.html", "../404.html"];
@@ -351,13 +351,40 @@ test("tutup botol dan aroma dapat dikendalikan dengan keyboard", async () => {
   assert.match(js, /aria-pressed/);
 });
 
-test("Motion dimuat malas dan menghormati reduced-motion serta save-data", async () => {
+test("tanpa pustaka Motion: hanya transisi CSS yang menghormati gerak", async () => {
   const pembungkus = await baca("../assets/js/motion-ui.js");
-  const pustaka = await baca("../assets/js/vendor/motion.min.js");
+  const paket = JSON.parse(await baca("../package.json"));
   assert.match(pembungkus, /prefers-reduced-motion: reduce/);
   assert.match(pembungkus, /saveData/);
-  assert.match(pembungkus, /vendor\/motion\.min\.js/);
-  assert.ok(pustaka.length > 1000, "vendor Motion tidak ditemukan");
+  assert.doesNotMatch(pembungkus, /muatMotion|vendor\/motion/);
+  assert.equal(paket.dependencies?.motion, undefined);
+  await assert.rejects(access(new URL("../assets/js/vendor/motion.min.js", import.meta.url)));
+});
+
+test("font hanya meminta bobot yang dipakai dan katalog mencadangkan ruang", async () => {
+  for (const halaman of HALAMAN) {
+    const html = await baca(halaman);
+    assert.match(html, /Cormorant:wght@400;600/);
+    assert.match(html, /Montserrat:wght@400;600/);
+    assert.doesNotMatch(html, /wght@[0-9;]*[357]/);
+  }
+  const css = await baca("../assets/css/pages.css");
+  assert.match(css, /\.product-grid \{[\s\S]*?min-height: 87rem/);
+  assert.match(css, /grid-template-columns: repeat\(3, 1fr\);\s*min-height: 43rem/);
+  assert.match(css, /:root\[data-detail-route\] \.product-grid/);
+  assert.match(css, /:root\[data-detail-route\] #utama \{[\s\S]*?height: 43rem/);
+  assert.match(await baca("../produk.html"), /dataset\.detailRoute/);
+});
+
+test("modul opsional dimuat sesuai penanda halaman", async () => {
+  const utama = await baca("../assets/js/main.js");
+  for (const modul of ["./botol-audio.js", "./catalog.js", "./detail.js"]) {
+    assert.ok(utama.includes(`import("${modul}")`), `${modul} tidak dimuat malas`);
+  }
+  for (const modul of ["./promo.js", "./content.js", "./gallery-zoom.js", "./video-text.js"]) {
+    assert.ok(utama.includes(`"${modul}"`), `${modul} tidak dimuat sesuai penanda`);
+  }
+  assert.match(utama, /document\.querySelector\(penanda\)/);
 });
 
 test("semua tautan eksternal memakai rel noopener noreferrer", async () => {

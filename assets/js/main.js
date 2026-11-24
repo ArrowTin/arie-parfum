@@ -1,13 +1,30 @@
 import { CONFIG } from "./config.js";
 import { buildWaLink } from "./whatsapp.js";
-import { initCatalog } from "./catalog.js";
-import { initDetail } from "./detail.js";
-import { initPromo } from "./promo.js";
-import { initKontenTambahan } from "./content.js";
 import { bisaGerak } from "./motion-ui.js";
-import { initGalleryZoom } from "./gallery-zoom.js";
-import { initVideoText } from "./video-text.js";
-import { mainkanAudioTutup } from "./botol-audio.js";
+
+// Fitur opsional dimuat hanya bila penandanya ada di halaman.
+async function jalankanJikaAda(penanda, modul, nama) {
+  if (!document.querySelector(penanda)) return;
+  const dimuat = await import(modul);
+  dimuat[nama]();
+}
+
+async function initPromo() {
+  await jalankanJikaAda("[data-promo]", "./promo.js", "initPromo");
+}
+
+async function initKontenTambahan() {
+  await jalankanJikaAda("[data-tentang], [data-galeri], [data-testimoni]",
+    "./content.js", "initKontenTambahan");
+}
+
+async function initGalleryZoom() {
+  await jalankanJikaAda("[data-galeri-grid]", "./gallery-zoom.js", "initGalleryZoom");
+}
+
+async function initVideoText() {
+  await jalankanJikaAda("[data-video-text]", "./video-text.js", "initVideoText");
+}
 
 // Isi teks dari config ke semua elemen penanda.
 function isiPenanda(penanda, nilai) {
@@ -65,9 +82,10 @@ export function initDataUsaha() {
 }
 
 // Momen botol: tutup diputar dan aroma dikeluarkan dengan transisi CSS saat ditekan.
-export function initFlacon() {
+export async function initFlacon() {
   const flacon = document.querySelector("[data-flacon]");
   if (!flacon) return;
+  const { mainkanAudioTutup } = await import("./botol-audio.js");
 
   const status = flacon.querySelector("[data-aroma-status]");
   let terbuka = false;
@@ -228,8 +246,10 @@ initNavigasi();
 
 const slug = new URLSearchParams(globalThis.location?.search ?? "").get("p");
 if (slug) {
+  const { initDetail } = await import("./detail.js");
   initDetail(slug);
-} else {
+} else if (document.querySelector("[data-catalog]")) {
+  const { initCatalog } = await import("./catalog.js");
   document.querySelectorAll("[data-catalog]").forEach((bagian) => {
     initCatalog(bagian);
   });
