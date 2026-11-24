@@ -36,6 +36,66 @@
   }
 }
 
+/* Bingkai kaca Dylan (Uiverse, MIT): panel inset 5px + blob cahaya di belakangnya. */
+.chrome-glass {
+  position: relative;
+  isolation: isolate;
+}
+
+.chrome-bg {
+  position: absolute;
+  inset: var(--space-none);
+  z-index: -1;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.chrome-bg::before {
+  content: "";
+  position: absolute;
+  inset: var(--space-xs);
+  z-index: 2;
+  border-radius: inherit;
+  background: linear-gradient(var(--light-angle),
+    color-mix(in srgb, var(--color-card) 88%, transparent),
+    color-mix(in srgb, var(--color-card) 62%, transparent));
+  backdrop-filter: blur(var(--glass-blur-lg)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(160%);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-highlight) 55%, transparent);
+  outline: var(--border-width) solid color-mix(in srgb, var(--color-card) 65%, transparent);
+  box-shadow: var(--shadow-glass);
+}
+
+.chrome-blob {
+  position: absolute;
+  z-index: 1;
+  width: 18rem;
+  height: 8rem;
+  top: calc(var(--space-3xl) * -1);
+  left: 6%;
+  border-radius: var(--radius-full);
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--color-highlight) 72%, transparent),
+    color-mix(in srgb, var(--color-accent) 32%, transparent) 55%,
+    var(--color-transparent) 72%);
+  filter: blur(var(--glass-blur-lg));
+  opacity: 0.7;
+  transition: transform var(--motion-glide) var(--ease-glide),
+    opacity var(--motion-glide) var(--ease-out);
+}
+
+.chrome-glass:is(:hover, :focus-within) .chrome-blob {
+  transform: translate3d(6%, 18%, 0) scale(1.08);
+  opacity: 0.9;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .chrome-bg::before {
+    background: var(--color-card);
+  }
+}
+
 .btn {
   position: relative;
   isolation: isolate;
@@ -94,11 +154,30 @@
 
 /* Varian Uiverse (MIT, lihat assets/css/UIVERSE-LICENSE.md) disesuaikan ke token. */
 .btn-wa {
+  overflow: hidden;
   background: linear-gradient(var(--light-angle),
     var(--color-accent), var(--color-accent-strong));
   box-shadow: inset var(--border-width) var(--border-width) var(--border-width)
     color-mix(in srgb, var(--color-highlight) 45%, transparent);
   letter-spacing: var(--space-xs);
+}
+
+.btn-wa::after {
+  content: "";
+  position: absolute;
+  inset: var(--space-none);
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(115deg,
+    var(--color-transparent) 36%,
+    color-mix(in srgb, var(--color-highlight) 38%, transparent) 50%,
+    var(--color-transparent) 64%);
+  transform: translateX(-120%);
+  transition: transform var(--motion-glide) var(--ease-glide);
+}
+
+.btn-wa:is(:hover, :focus-visible)::after {
+  transform: translateX(120%);
 }
 
 .btn-wa:hover {
@@ -109,6 +188,21 @@
 
 .btn-wa:active {
   letter-spacing: var(--space-none);
+}
+
+.btn-arrow {
+  width: var(--space-lg);
+  height: var(--space-lg);
+  fill: none;
+  stroke: var(--color-current);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--motion-base) var(--ease-glide);
+}
+
+.btn:is(:hover, :focus-visible) > .btn-arrow {
+  transform: translateX(var(--motion-shift));
 }
 
 .btn-route {
@@ -173,9 +267,20 @@
   border-top: var(--border-none);
   border-inline: var(--border-none);
   border-bottom: var(--border-width) solid color-mix(in srgb, var(--color-accent-strong) 22%, transparent);
+  border-radius: var(--radius-none);
+  transition: box-shadow var(--motion-base) var(--ease-out),
+    border-color var(--motion-base) var(--ease-out);
+}
+
+.site-header.is-scrolled {
+  border-bottom-color: color-mix(in srgb, var(--color-accent) 48%, transparent);
+  box-shadow: 0 var(--space-sm) var(--space-xl) calc(var(--space-sm) * -1)
+    color-mix(in srgb, var(--color-primary) 18%, transparent);
 }
 
 .header-inner {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -254,15 +359,50 @@
 }
 
 .nav-list a {
+  position: relative;
   display: flex;
   align-items: center;
   min-height: var(--tap-min);
   padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-md);
+  transition: background var(--motion-base) var(--ease-out),
+    color var(--motion-base) var(--ease-out);
+}
+
+.nav-list a::after {
+  content: "";
+  position: absolute;
+  left: var(--space-md);
+  right: var(--space-md);
+  bottom: var(--space-xs);
+  height: var(--border-width);
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--motion-base) var(--ease-glide);
+}
+
+.nav-list a:is(:hover, :focus-visible)::after {
+  transform: scaleX(1);
 }
 
 .nav-list a:hover {
-  background: var(--color-muted);
+  background: color-mix(in srgb, var(--color-muted) 78%, transparent);
+}
+
+.nav-list.is-open li {
+  animation: nav-masuk var(--motion-base) var(--ease-glide) both;
+}
+
+.nav-list.is-open li:nth-child(2) { animation-delay: var(--motion-fast); }
+.nav-list.is-open li:nth-child(3) { animation-delay: var(--motion-base); }
+.nav-list.is-open li:nth-child(4) { animation-delay: var(--motion-slow); }
+.nav-list.is-open li:nth-child(5) { animation-delay: var(--space-sm); }
+
+@keyframes nav-masuk {
+  from { opacity: 0; transform: translateY(calc(var(--motion-shift) * -2)); }
+  to { opacity: 1; transform: none; }
 }
 
 .header-wa {
@@ -552,11 +692,36 @@
 
 .site-footer {
   padding-block: var(--space-2xl) calc(var(--space-2xl) + var(--tap-min));
-  background: var(--color-primary);
+  background: linear-gradient(var(--light-angle),
+    color-mix(in srgb, var(--color-primary) 94%, var(--color-accent)),
+    var(--color-primary));
   color: var(--color-on-primary);
 }
 
+.site-footer .chrome-bg::before {
+  background: linear-gradient(var(--light-angle),
+    color-mix(in srgb, var(--color-primary) 82%, transparent),
+    color-mix(in srgb, var(--color-primary) 64%, transparent));
+  border-color: color-mix(in srgb, var(--color-highlight) 38%, transparent);
+  outline-color: color-mix(in srgb, var(--color-highlight) 16%, transparent);
+}
+
+.site-footer .chrome-blob {
+  top: auto;
+  right: -4rem;
+  bottom: calc(var(--space-3xl) * -1);
+  left: auto;
+  width: 26rem;
+  height: 14rem;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--color-accent) 62%, transparent),
+    color-mix(in srgb, var(--color-highlight) 28%, transparent) 58%,
+    var(--color-transparent) 74%);
+}
+
 .footer-grid {
+  position: relative;
+  z-index: 2;
   display: grid;
   gap: var(--space-xl);
 }
@@ -570,26 +735,59 @@
 
 .footer-grid p,
 .footer-links {
-  opacity: 0.85;
+  opacity: 0.9;
+}
+
+.footer-cta {
+  margin-top: var(--space-md);
 }
 
 .footer-links a,
 .footer-route {
+  position: relative;
   display: inline-flex;
   align-items: center;
   min-height: var(--tap-min);
   color: var(--color-on-primary);
-  text-decoration: underline;
-  text-underline-offset: var(--space-xs);
+  transition: color var(--motion-base) var(--ease-out),
+    transform var(--motion-base) var(--ease-glide);
+}
+
+.footer-links a::after,
+.footer-route::after {
+  content: "";
+  position: absolute;
+  left: var(--space-none);
+  right: var(--space-none);
+  bottom: var(--space-sm);
+  height: var(--border-width);
+  border-radius: var(--radius-full);
+  background: var(--color-highlight);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--motion-base) var(--ease-glide);
+}
+
+.footer-links a:is(:hover, :focus-visible)::after,
+.footer-route:is(:hover, :focus-visible)::after {
+  transform: scaleX(1);
+}
+
+.footer-links a:is(:hover, :focus-visible),
+.footer-route:is(:hover, :focus-visible) {
+  color: var(--color-highlight);
+  transform: translateX(var(--motion-shift));
 }
 
 .footer-bottom {
+  position: relative;
+  z-index: 2;
   margin-top: var(--space-xl);
   padding-top: var(--space-md);
-  border-top: var(--border-width) solid var(--color-border);
+  border-top: var(--border-width) solid color-mix(in srgb, var(--color-highlight) 22%, transparent);
   font-size: var(--text-sm);
   text-align: center;
-  opacity: 0.75;
+  opacity: 0.82;
 }
 
 .fab-wa {

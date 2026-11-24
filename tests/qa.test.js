@@ -123,6 +123,25 @@ test("tilt flacon hanya aktif pada pointer halus dan menghormati reduced-motion"
   assert.doesNotMatch(js, /classList\.add\("reveal"\)/);
 });
 
+test("chrome glass navbar/footer memakai bingkai Dylan dan gerak aman", async () => {
+  const html = await baca("../index.html");
+  const css = await baca("../assets/css/components.css");
+  const dasar = await baca("../assets/css/base.css");
+  const js = await baca("../assets/js/main.js");
+  const lisensi = await baca("../assets/css/UIVERSE-LICENSE.md");
+  assert.match(html, /site-header glass chrome-glass/);
+  assert.match(html, /site-footer chrome-glass/);
+  assert.equal((html.match(/class="chrome-bg"/g) ?? []).length, 2);
+  assert.match(css, /\.chrome-bg::before/);
+  assert.match(css, /\.chrome-blob/);
+  assert.match(css, /\.nav-list a::after/);
+  assert.match(css, /\.btn-wa::after/);
+  assert.match(dasar, /prefers-reduced-motion: reduce/);
+  assert.match(js, /initChrome\(\)/);
+  assert.match(lisensi, /dylanharriscameron/);
+  assert.doesNotMatch(css, /#[0-9a-fA-F]{3,8}/);
+});
+
 test("galeri ring Motion memakai ilustrasi unDraw berlabel Contoh", async () => {
   const config = await baca("../assets/js/config.js");
   const content = await baca("../assets/js/content.js");
