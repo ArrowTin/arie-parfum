@@ -19,7 +19,26 @@
   scroll-margin-top: var(--space-3xl);
 }
 
+/* Permukaan kaca: isi translusen, garis cahaya, bayangan kontak dan luas. */
+.glass {
+  background: linear-gradient(var(--light-angle),
+    color-mix(in srgb, var(--color-card) 88%, transparent),
+    color-mix(in srgb, var(--color-card) 62%, transparent));
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-card) 75%, transparent);
+  box-shadow: var(--shadow-glass);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--color-card);
+  }
+}
+
 .btn {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -30,10 +49,8 @@
   font-size: var(--text-sm);
   font-weight: var(--fw-semibold);
   text-align: center;
-  transition: background-color var(--motion-base) var(--ease-out),
-    color var(--motion-base) var(--ease-out),
-    border-color var(--motion-base) var(--ease-out),
-    opacity var(--motion-base) var(--ease-out);
+  transition: opacity var(--motion-base) var(--ease-out),
+    transform var(--motion-base) var(--ease-out);
 }
 
 .btn-accent {
@@ -42,7 +59,8 @@
 }
 
 .btn-accent:hover {
-  opacity: 0.9;
+  opacity: 0.88;
+  transform: translateY(calc(var(--motion-shift) * -1));
 }
 
 .btn-outline {
@@ -50,33 +68,37 @@
   color: var(--color-primary);
 }
 
-.btn-outline:hover {
+.btn-outline::before {
+  content: "";
+  position: absolute;
+  inset: var(--space-none);
+  z-index: -1;
+  border-radius: inherit;
   background: var(--color-primary);
+  opacity: 0;
+  transition: opacity var(--motion-base) var(--ease-out);
+}
+
+.btn-outline:hover::before {
+  opacity: 1;
+}
+
+.btn-outline:hover {
   color: var(--color-on-primary);
+  transform: translateY(calc(var(--motion-shift) * -1));
 }
 
 .btn:active {
-  transform: translateY(var(--motion-shift));
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(var(--motion-shift));
-  transition: opacity var(--motion-slow) var(--ease-out),
-    transform var(--motion-slow) var(--ease-out);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
+  transform: scale(0.97);
 }
 
 .site-header {
   position: sticky;
   top: var(--space-none);
   z-index: 20;
-  border-bottom: var(--border-width) solid var(--color-border);
-  background: var(--color-card);
+  border-top: var(--border-none);
+  border-inline: var(--border-none);
+  border-bottom: var(--border-width) solid color-mix(in srgb, var(--color-accent-strong) 22%, transparent);
 }
 
 .header-inner {
@@ -124,24 +146,37 @@
   stroke: var(--color-current);
   stroke-width: 2;
   stroke-linecap: round;
+  transition: transform var(--motion-base) var(--ease-out);
+}
+
+.nav-toggle:where([aria-expanded="true"]) svg {
+  transform: rotate(45deg);
 }
 
 .nav-list {
-  display: none;
+  display: block;
   position: absolute;
   top: 100%;
   right: var(--space-none);
   z-index: 30;
   min-width: 11rem;
   padding: var(--space-sm);
-  border: var(--border-width) solid var(--color-border);
   border-radius: var(--radius-lg);
-  background: var(--color-card);
-  box-shadow: var(--shadow-lg);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(calc(var(--motion-shift) * -1)) scale(0.98);
+  transform-origin: top right;
+  pointer-events: none;
+  transition: opacity var(--motion-fast) var(--ease-out),
+    transform var(--motion-fast) var(--ease-out),
+    visibility var(--motion-fast) var(--ease-out);
 }
 
 .nav-list.is-open {
-  display: block;
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
 }
 
 .nav-list a {
@@ -161,8 +196,39 @@
 }
 
 .hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding-block: var(--space-3xl) var(--space-2xl);
-  background: linear-gradient(180deg, var(--color-card), var(--color-background));
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--color-highlight) 14%, var(--color-card)),
+    var(--color-background));
+}
+
+/* Medan cahaya memberi objek bagi blur kaca; tidak bergerak. */
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: var(--radius-full);
+  pointer-events: none;
+}
+
+.hero::before {
+  top: -14rem;
+  left: 4%;
+  width: min(32rem, 80vw);
+  height: min(32rem, 80vw);
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-highlight) 55%, transparent), transparent 70%);
+}
+
+.hero::after {
+  right: -8rem;
+  bottom: -14rem;
+  width: min(28rem, 70vw);
+  height: min(28rem, 70vw);
+  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 30%, transparent), transparent 70%);
 }
 
 .hero-grid {
@@ -171,12 +237,16 @@
   align-items: center;
 }
 
+.hero-panel {
+  padding: var(--space-lg);
+  border-radius: var(--radius-xl);
+}
+
 .eyebrow {
   font-size: var(--text-sm);
   font-weight: var(--fw-semibold);
   letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  color: var(--color-secondary);
+  color: var(--color-accent-strong);
 }
 
 .hero h1 {
@@ -187,7 +257,7 @@
 .hero-tagline {
   font-family: var(--font-heading);
   font-size: var(--text-2xl);
-  color: var(--color-accent);
+  color: var(--color-accent-strong);
 }
 
 .hero-desc {
@@ -203,7 +273,7 @@
   margin-top: var(--space-md);
   padding: var(--space-xs) var(--space-md);
   border-radius: var(--radius-full);
-  background: var(--color-muted);
+  background: color-mix(in srgb, var(--color-highlight) 30%, var(--color-card));
   color: var(--color-foreground);
   font-size: var(--text-sm);
 }
@@ -232,19 +302,66 @@
   place-items: center;
 }
 
+/* Momen ikonik: satu botol kaca dengan tilt pointer dan sapuan kilau. */
+.flacon {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 20rem);
+  padding: var(--space-lg);
+  border-radius: var(--radius-xl);
+  transform: perspective(50rem) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  transition: transform var(--motion-base) var(--ease-out);
+}
+
+.flacon-glint {
+  position: absolute;
+  inset: var(--space-none);
+  z-index: 2;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.flacon-glint::after {
+  content: "";
+  position: absolute;
+  inset: var(--space-none);
+  background: linear-gradient(115deg, transparent 35%,
+    color-mix(in srgb, var(--color-card) 70%, transparent) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform var(--motion-glide) var(--ease-glide);
+}
+
+.flacon:hover .flacon-glint::after {
+  transform: translateX(120%);
+}
+
 .botol {
+  position: relative;
+  z-index: 1;
   width: min(100%, 16rem);
   filter: drop-shadow(var(--space-none) var(--space-sm) var(--space-md) var(--color-border));
 }
 
 .botol-tutup {
-  fill: var(--color-secondary);
+  fill: var(--color-primary);
 }
 
 .botol-badan {
-  fill: var(--color-muted);
-  stroke: var(--color-border);
+  fill: color-mix(in srgb, var(--color-card) 72%, var(--color-highlight));
+  stroke: var(--color-accent-strong);
   stroke-width: 2;
+}
+
+.botol-kilau {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-card) 85%, transparent);
+  stroke-width: 6;
+  stroke-linecap: round;
 }
 
 .botol-label {
@@ -271,11 +388,34 @@
 }
 
 .feature-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding: var(--space-lg);
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--radius-lg);
   background: var(--color-card);
   box-shadow: var(--shadow-sm);
+  transition: transform var(--motion-base) var(--ease-out);
+}
+
+.feature-card::before {
+  content: "";
+  position: absolute;
+  inset: var(--space-none);
+  z-index: -1;
+  background: linear-gradient(var(--light-angle),
+    color-mix(in srgb, var(--color-highlight) 30%, transparent), transparent 65%);
+  opacity: 0;
+  transition: opacity var(--motion-base) var(--ease-out);
+}
+
+.feature-card:hover::before {
+  opacity: 1;
+}
+
+.feature-card:hover {
+  transform: translateY(calc(var(--motion-shift) * -1));
 }
 
 .feature-card h3 {
@@ -345,6 +485,17 @@
   background: var(--color-accent);
   color: var(--color-on-accent);
   box-shadow: var(--shadow-lg);
+  transition: transform var(--motion-base) var(--ease-out),
+    opacity var(--motion-base) var(--ease-out);
+}
+
+.fab-wa:hover {
+  transform: translateY(calc(var(--motion-shift) * -1));
+  opacity: 0.92;
+}
+
+.fab-wa:active {
+  transform: scale(0.97);
 }
 
 .fab-wa svg {
@@ -367,7 +518,13 @@
     border: var(--border-none);
     border-radius: var(--radius-none);
     background: var(--color-transparent);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     box-shadow: none;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
   }
 
   .nav-list a {

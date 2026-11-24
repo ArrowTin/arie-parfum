@@ -60,23 +60,46 @@ export function initDataUsaha() {
   }
 }
 
-// Gerak masuk viewport: hanya dipasang bila didukung dan pengguna tidak meminta reduced-motion.
-export function initGerak() {
-  if (!("IntersectionObserver" in globalThis)) return;
-  if (globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+// Tilt botol hero: hanya pada pointer halus, saat terlihat, dan tanpa reduced-motion/save-data.
+export function initFlacon() {
+  const flacon = document.querySelector("[data-flacon]");
+  if (!flacon) return;
+
+  const media = globalThis.matchMedia;
+  if (media?.("(prefers-reduced-motion: reduce)").matches) return;
+  if (media?.("(hover: hover) and (pointer: fine)").matches === false) return;
+  if (globalThis.navigator?.connection?.saveData) return;
+
+  const aturKemiringan = (acara) => {
+    const batas = flacon.getBoundingClientRect();
+    if (!batas.width || !batas.height) return;
+    const x = (acara.clientX - batas.left) / batas.width - 0.5;
+    const y = (acara.clientY - batas.top) / batas.height - 0.5;
+    flacon.style.setProperty("--tilt-x", `${(y * -12).toFixed(2)}deg`);
+    flacon.style.setProperty("--tilt-y", `${(x * 12).toFixed(2)}deg`);
+  };
+
+  const kembalikan = () => {
+    flacon.style.setProperty("--tilt-x", "0deg");
+    flacon.style.setProperty("--tilt-y", "0deg");
+  };
+
+  const pasang = () => {
+    flacon.addEventListener("pointermove", aturKemiringan);
+    flacon.addEventListener("pointerleave", kembalikan);
+  };
+
+  if (!("IntersectionObserver" in globalThis)) {
+    pasang();
+    return;
+  }
 
   const pengamat = new IntersectionObserver((entri) => {
-    entri.forEach((butir) => {
-      if (!butir.isIntersecting) return;
-      butir.target.classList.add("is-visible");
-      pengamat.unobserve(butir.target);
-    });
-  }, { threshold: 0.08 });
-
-  document.querySelectorAll("main > section:not([hidden]):not(.hero)").forEach((bagian) => {
-    bagian.classList.add("reveal");
-    pengamat.observe(bagian);
-  });
+    if (!entri.some((butir) => butir.isIntersecting)) return;
+    pasang();
+    pengamat.disconnect();
+  }, { threshold: 0.2 });
+  pengamat.observe(flacon);
 }
 
 // SEO: canonical, og:url, dan JSON-LD diisi dari config saat halaman dimuat.
@@ -155,4 +178,4 @@ if (slug) {
 
 initPromo();
 initKontenTambahan();
-initGerak();
+initFlacon();

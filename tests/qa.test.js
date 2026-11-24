@@ -112,11 +112,15 @@ test("beranda lokal di bawah 1 MB (font eksternal tidak dihitung)", async () => 
   assert.ok(total < 1024 * 1024, `total beranda ${total} byte melebihi 1 MB`);
 });
 
-test("gerak masuk viewport melewati hero dan menghormati reduced-motion", async () => {
+test("tilt flacon hanya aktif pada pointer halus dan menghormati reduced-motion", async () => {
   const js = await baca("../assets/js/main.js");
+  const html = await baca("../index.html");
   assert.match(js, /prefers-reduced-motion: reduce/);
-  assert.match(js, /:not\(\.hero\)/);
+  assert.match(js, /hover: hover/);
+  assert.match(js, /saveData/);
   assert.match(js, /IntersectionObserver/);
+  assert.match(html, /data-flacon/);
+  assert.doesNotMatch(js, /classList\.add\("reveal"\)/);
 });
 
 test("semua tautan eksternal memakai rel noopener noreferrer", async () => {

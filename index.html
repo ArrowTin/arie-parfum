@@ -26,7 +26,7 @@
 <body>
   <a class="skip-link" href="#utama">Lewati ke konten</a>
 
-  <header class="site-header" id="beranda">
+  <header class="site-header glass" id="beranda">
     <div class="container header-inner">
       <a class="brand" href="#beranda" aria-label="Arie Parfum, kembali ke atas">
         <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
@@ -42,7 +42,7 @@
           </svg>
           <span class="visually-hidden">Buka menu</span>
         </button>
-        <ul class="nav-list" id="menu-utama">
+        <ul class="nav-list glass" id="menu-utama">
           <li><a href="#beranda">Beranda</a></li>
           <li><a href="#keunggulan">Keunggulan</a></li>
           <li><a href="#katalog">Katalog</a></li>
@@ -58,7 +58,7 @@
   <main id="utama">
     <section class="hero" aria-labelledby="hero-judul">
       <div class="container hero-grid">
-        <div class="hero-copy">
+        <div class="hero-copy glass hero-panel">
           <p class="eyebrow" data-config="category">Toko Parfum</p>
           <h1 id="hero-judul" data-config="name">Arie Parfum</h1>
           <p class="hero-tagline">Wangi pilihan, buka kapan saja.</p>
@@ -73,11 +73,15 @@
           </div>
         </div>
         <div class="hero-visual" aria-hidden="true">
-          <svg class="botol" viewBox="0 0 240 300" focusable="false">
-            <rect class="botol-tutup" x="94" y="16" width="52" height="34" rx="8"></rect>
-            <path class="botol-badan" d="M75 60h90a18 18 0 0 1 18 18v172a26 26 0 0 1-26 26H83a26 26 0 0 1-26-26V78a18 18 0 0 1 18-18Z"></path>
-            <rect class="botol-label" x="78" y="142" width="84" height="70" rx="6"></rect>
-          </svg>
+          <div class="flacon glass" data-flacon>
+            <span class="flacon-glint"></span>
+            <svg class="botol" viewBox="0 0 240 300" focusable="false">
+              <rect class="botol-tutup" x="94" y="16" width="52" height="34" rx="8"></rect>
+              <path class="botol-badan" d="M75 60h90a18 18 0 0 1 18 18v172a26 26 0 0 1-26 26H83a26 26 0 0 1-26-26V78a18 18 0 0 1 18-18Z"></path>
+              <path class="botol-kilau" d="M84 78v148"></path>
+              <rect class="botol-label" x="78" y="142" width="84" height="70" rx="6"></rect>
+            </svg>
+          </div>
         </div>
       </div>
     </section>

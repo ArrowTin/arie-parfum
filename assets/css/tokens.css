@@ -7,7 +7,9 @@
   --color-on-secondary: #FFFFFF;
   --color-accent: #A16207;
   --color-on-accent: #FFFFFF;
-  --color-background: #FAFAF9;
+  --color-accent-strong: #7A4A06;
+  --color-highlight: #E7BE73;
+  --color-background: #FAF7F1;
   --color-foreground: #0C0A09;
   --color-card: #FFFFFF;
   --color-card-foreground: #0C0A09;
@@ -68,14 +70,22 @@
   --shadow-md: 0 4px 6px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px rgb(0 0 0 / 0.15);
+  --shadow-glass: inset 0 1px 0 rgb(255 255 255 / 0.65),
+    inset 0 -1px 0 rgb(0 0 0 / 0.06), 0 1px 2px rgb(0 0 0 / 0.06),
+    0 18px 40px -14px rgb(72 45 10 / 0.35);
 
   /* Gerak & tata letak */
   --motion-fast: 150ms;
   --motion-base: 200ms;
   --motion-slow: 300ms;
+  --motion-glide: 700ms;
   --motion-none: 0.01ms;
   --motion-shift: 0.125rem;
   --ease-out: cubic-bezier(0.2, 0.7, 0.3, 1);
+  --ease-glide: cubic-bezier(0.22, 1, 0.36, 1);
+  --glass-blur: 12px;
+  --glass-blur-lg: 24px;
+  --light-angle: 145deg;
   --container-max: 70rem;
 }
 
