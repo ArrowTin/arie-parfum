@@ -125,6 +125,28 @@ test("tilt flacon hanya aktif pada pointer halus dan menghormati reduced-motion"
   assert.doesNotMatch(js, /classList\.add\("reveal"\)/);
 });
 
+test("integrasi refresh: fitur baru coexisting dan token tetap terpusat", async () => {
+  const html = await baca("../index.html");
+  const utama = await baca("../assets/js/main.js");
+  const komponen = await baca("../assets/css/components.css");
+  const halaman = await baca("../assets/css/pages.css");
+  const dasar = await baca("../assets/css/base.css");
+  for (const penanda of [
+    "chrome-glass", "data-video-text", "data-flacon", "gallery-ring",
+    "data-wa", "data-route", "prefers-reduced-motion",
+  ]) {
+    assert.ok(html.includes(penanda) || komponen.includes(penanda) ||
+      halaman.includes(penanda) || dasar.includes(penanda),
+      `${penanda} tidak ditemukan`);
+  }
+  for (const inisialisasi of ["initChrome()", "initVideoText()", "initFlacon()", "initKontenTambahan()"]) {
+    assert.ok(utama.includes(inisialisasi), `${inisialisasi} tidak dipanggil`);
+  }
+  assert.doesNotMatch(komponen.replace(/\/\*[\s\S]*?\*\//g, ""), /#[0-9a-fA-F]{3,8}\b/);
+  assert.doesNotMatch(halaman.replace(/\/\*[\s\S]*?\*\//g, ""), /#[0-9a-fA-F]{3,8}\b/);
+  assert.doesNotMatch(html, /<video[^>]+autoplay/i);
+});
+
 test("audio tutup botol disintesis saat klik tanpa autoplay", async () => {
   const html = await baca("../index.html");
   const js = await baca("../assets/js/main.js");
