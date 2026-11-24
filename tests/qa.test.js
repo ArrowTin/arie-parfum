@@ -123,6 +123,15 @@ test("tilt flacon hanya aktif pada pointer halus dan menghormati reduced-motion"
   assert.doesNotMatch(js, /classList\.add\("reveal"\)/);
 });
 
+test("Motion dimuat malas dan menghormati reduced-motion serta save-data", async () => {
+  const pembungkus = await baca("../assets/js/motion-ui.js");
+  const pustaka = await baca("../assets/js/vendor/motion.min.js");
+  assert.match(pembungkus, /prefers-reduced-motion: reduce/);
+  assert.match(pembungkus, /saveData/);
+  assert.match(pembungkus, /vendor\/motion\.min\.js/);
+  assert.ok(pustaka.length > 1000, "vendor Motion tidak ditemukan");
+});
+
 test("semua tautan eksternal memakai rel noopener noreferrer", async () => {
   for (const halaman of HALAMAN) {
     const html = await baca(halaman);
