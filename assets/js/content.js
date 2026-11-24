@@ -1,6 +1,6 @@
 import { CONFIG } from "./config.js";
 import { ILUSTRASI } from "./illustrations.js";
-import { bisaGerak, muatMotion } from "./motion-ui.js";
+import { bisaGerak } from "./motion-ui.js";
 
 function buat(tag, kelas, teks) {
   const elemen = document.createElement(tag);
@@ -41,115 +41,85 @@ function media(item) {
   return item.src ? gambar(item) : ilustrasi(item);
 }
 
-function indeksAktif(sudut, jumlah) {
-  const langkah = 360 / jumlah;
-  return ((Math.round(-sudut / langkah) % jumlah) + jumlah) % jumlah;
-}
-
-function sudutWajar(sudut) {
-  return ((sudut + 180) % 360 + 360) % 360 - 180;
-}
-
-// Cincin radial: drag horizontal, panah, atau tombol; Motion dipakai bila diizinkan.
+// Setengah cincin menampilkan semua foto; kontrol menggeser fokus, bukan menyembunyikan kartu.
 function initGaleriRing(galeri, data, cincin) {
   const kendali = galeri.querySelector("[data-galeri-kendali]");
   const status = galeri.querySelector("[data-galeri-status]");
   const jumlah = data.length;
-  const langkah = 360 / jumlah;
+  const busur = 140 / Math.max(jumlah - 1, 1);
 
   const kartu = data.map((item, indeks) => {
-    const baris = buat("li", "gallery-card");
-    const rad = ((-90 + indeks * langkah) * Math.PI) / 180;
-    baris.style.setProperty("--x", `${(Math.cos(rad) * 30).toFixed(2)}%`);
-    baris.style.setProperty("--y", `${(Math.sin(rad) * 15).toFixed(2)}%`);
-    baris.append(media(item), buat("span", "gallery-label", item.label ?? "Contoh"));
+    const baris = buat("li", "gallery-card is-tampak");
+    const rad = ((-160 + indeks * busur) * Math.PI) / 180;
+    baris.style.setProperty("--x", `${(Math.cos(rad) * 26).toFixed(2)}%`);
+    baris.style.setProperty("--y", `${(Math.sin(rad) * 16).toFixed(2)}%`);
+    const tombol = buat("button", "gallery-trigger");
+    tombol.type = "button";
+    tombol.setAttribute("aria-label", `Perbesar ${item.alt ?? "ilustrasi contoh"}`);
+    tombol.append(media(item));
+    baris.append(tombol, buat("span", "gallery-label", item.label ?? "Contoh"));
     return baris;
   });
   cincin.append(...kartu);
 
-  let sudutSekarang = 0;
-  const perbaruiTampilan = () => {
+  let fokus = 0;
+  const perbaruiFokus = () => {
     kartu.forEach((baris, indeks) => {
-      const sudut = sudutWajar(-90 + indeks * langkah + sudutSekarang);
-      const tampak = sudut >= -180 && sudut <= 0;
-      baris.classList.toggle("is-tampak", tampak);
-      baris.inert = !tampak;
+      baris.classList.toggle("is-utama", indeks === fokus);
     });
-    if (status) status.textContent = `Ilustrasi ${indeksAktif(sudutSekarang, jumlah) + 1} dari ${jumlah}`;
+    if (status) status.textContent = `Foto ${fokus + 1} dari ${jumlah}`;
   };
-  perbaruiTampilan();
+  perbaruiFokus();
 
-  const pakaiStatic = () => {
+  if (!bisaGerak()) {
     cincin.classList.add("tanpa-gerak");
     cincin.removeAttribute("tabindex");
     if (kendali) kendali.hidden = true;
-  };
-  if (!bisaGerak()) {
-    pakaiStatic();
     return;
   }
 
-  muatMotion().then((pustaka) => {
-    if (!pustaka?.animate) {
-      pakaiStatic();
-      return;
-    }
-    const { animate, stagger } = pustaka;
-    animate(kartu, { scale: [0.86, 1] }, {
-      duration: 0.5,
-      delay: stagger(0.08),
-      ease: "easeOut",
-    });
+  cincin.classList.add("is-animasi");
+  const geserFokus = (arah) => {
+    fokus = ((fokus + arah) % jumlah + jumlah) % jumlah;
+    perbaruiFokus();
+  };
 
-    const putarKe = (tujuan, durasi = 0.5) => {
-      sudutSekarang = tujuan;
-      animate(cincin, { rotate: tujuan }, { duration: durasi, ease: "easeInOut" });
-      animate(kartu, { rotate: -tujuan }, { duration: durasi, ease: "easeInOut" });
-      perbaruiTampilan();
-    };
-    const putar = (arah) =>
-      putarKe(Math.round(sudutSekarang / langkah) * langkah + arah * langkah);
-
-    kendali?.querySelectorAll("[data-galeri-putar]").forEach((tombol) => {
-      tombol.addEventListener("click", () => putar(Number(tombol.dataset.galeriPutar) || 1));
-    });
-    cincin.addEventListener("keydown", (event) => {
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        putar(-1);
-      } else if (event.key === "ArrowRight") {
-        event.preventDefault();
-        putar(1);
-      }
-    });
-
-    let awalX = 0;
-    let awalSudut = 0;
-    let menyeret = false;
-    cincin.addEventListener("pointerdown", (event) => {
-      menyeret = true;
-      awalX = event.clientX;
-      awalSudut = sudutSekarang;
-      cincin.setPointerCapture?.(event.pointerId);
-    });
-    cincin.addEventListener("pointermove", (event) => {
-      if (!menyeret) return;
-      const lebar = cincin.getBoundingClientRect().width || 1;
-      sudutSekarang = awalSudut + ((event.clientX - awalX) / lebar) * 180;
-      cincin.style.transform = `rotate(${sudutSekarang}deg)`;
-      kartu.forEach((baris) => {
-        baris.style.transform = `rotate(${-sudutSekarang}deg)`;
-      });
-      perbaruiTampilan();
-    });
-    const selesai = () => {
-      if (!menyeret) return;
-      menyeret = false;
-      putarKe(Math.round(sudutSekarang / langkah) * langkah);
-    };
-    cincin.addEventListener("pointerup", selesai);
-    cincin.addEventListener("pointercancel", selesai);
+  kendali?.querySelectorAll("[data-galeri-putar]").forEach((tombol) => {
+    tombol.addEventListener("click", () => geserFokus(Number(tombol.dataset.galeriPutar) || 1));
   });
+  cincin.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      geserFokus(-1);
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      geserFokus(1);
+    }
+  });
+
+  let awalX = 0;
+  let menyeret = false;
+  const hentikanSeret = () => {
+    menyeret = false;
+    cincin.classList.remove("is-menyeret");
+    globalThis.removeEventListener("pointerup", selesaiSeret);
+    globalThis.removeEventListener("pointercancel", hentikanSeret);
+  };
+  cincin.addEventListener("pointerdown", (event) => {
+    menyeret = true;
+    awalX = event.clientX;
+    cincin.classList.add("is-menyeret");
+    globalThis.addEventListener("pointerup", selesaiSeret, { once: true });
+    globalThis.addEventListener("pointercancel", hentikanSeret, { once: true });
+  });
+  function selesaiSeret(event) {
+    if (!menyeret) return;
+    hentikanSeret();
+    const jarak = event.clientX - awalX;
+    if (Math.abs(jarak) > Math.min(cincin.getBoundingClientRect().width / 6, 48)) {
+      geserFokus(jarak < 0 ? 1 : -1);
+    }
+  }
 }
 
 // Tentang, galeri, dan testimoni hanya tampil bila datanya memang ada.

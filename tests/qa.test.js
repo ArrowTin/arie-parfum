@@ -145,6 +145,31 @@ test("panggung galeri dan kartu kontak menyatu dengan transisi aman", async () =
   assert.doesNotMatch(css, /#[0-9a-fA-F]{3,8}\b/);
 });
 
+test("zoom galeri, judul video, footer dan nav memakai transisi CSS", async () => {
+  const css = await baca("../assets/css/components.css");
+  const halaman = await baca("../assets/css/pages.css");
+  const zoom = await baca("../assets/js/gallery-zoom.js");
+  const video = await baca("../assets/js/video-text.js");
+  const utama = await baca("../assets/js/main.js");
+  assert.match(zoom, /role", "dialog"/);
+  assert.match(zoom, /aria-modal", "true"/);
+  assert.match(zoom, /cloneNode\(true\)/);
+  assert.match(zoom, /Escape/);
+  assert.match(zoom, /requestAnimationFrame/);
+  assert.match(utama, /initGalleryZoom\(\)/);
+  assert.match(halaman, /\.zoom-overlay\.is-buka \.zoom-panel/);
+  assert.match(halaman, /\.zoom-close:is\(:hover, :focus-visible\)/);
+  assert.match(css, /\.judul-video \[data-video-text-label\]/);
+  assert.match(css, /z-index: 2/);
+  assert.match(video, /kembali|pause|classList\.remove\("is-aktif"\)/);
+  assert.match(css, /site-footer \.chrome-bg::before/);
+  assert.match(css, /outline-color: var\(--color-transparent\)/);
+  assert.match(css, /site-header \{[\s\S]*?border-radius: var\(--radius-none\) var\(--radius-none\) var\(--radius-lg\)/);
+  assert.match(css, /\.nav-list a:is\(:hover, :focus-visible\)[\s\S]*?color: var\(--color-accent-strong\)/);
+  assert.match(css, /\.botol-tutup-grup \{[\s\S]*?transition: transform/);
+  assert.doesNotMatch(halaman, /#[0-9a-fA-F]{3,8}\b/);
+});
+
 test("integrasi refresh: fitur baru coexisting dan token tetap terpusat", async () => {
   const html = await baca("../index.html");
   const utama = await baca("../assets/js/main.js");
@@ -183,7 +208,7 @@ test("audio tutup botol disintesis saat klik tanpa autoplay", async () => {
   assert.match(dasar, /prefers-reduced-motion: reduce/);
 });
 
-test("Video Text judul memakai video lokal, mask SVG, dan fallback aman", async () => {
+test("Video Text judul memakai video lokal di belakang teks dan fallback aman", async () => {
   const html = await baca("../index.html");
   const js = await baca("../assets/js/video-text.js");
   const css = await baca("../assets/css/components.css");
@@ -193,12 +218,13 @@ test("Video Text judul memakai video lokal, mask SVG, dan fallback aman", async 
   assert.match(html, /assets\/video\/arie-video-text\.webm/);
   assert.match(html, /<h1 id="hero-judul" class="judul-video"/);
   assert.equal((html.match(/<h1\b/g) ?? []).length, 1);
-  assert.match(js, /createElementNS\(NS, "text"\)/);
-  assert.match(js, /encodeURIComponent\(svg\)/);
   assert.match(js, /bisaGerak\(\)/);
+  assert.match(js, /video\.pause\(\)/);
   assert.match(js, /IntersectionObserver/);
   assert.doesNotMatch(js, /innerHTML/);
-  assert.match(css, /mask-image: var\(--video-text-mask\)/);
+  assert.match(css, /\.judul-video \[data-video-text-label\]/);
+  assert.match(css, /z-index: 2/);
+  assert.match(css, /\.video-text-media\.is-aktif[\s\S]*?opacity: 0\.24/);
   assert.match(lisensi, /magicui/);
   assert.ok(video.length > 1000, "video lokal kosong");
 });
@@ -222,27 +248,27 @@ test("chrome glass navbar/footer memakai bingkai Dylan dan gerak aman", async ()
   assert.doesNotMatch(css, /#[0-9a-fA-F]{3,8}/);
 });
 
-test("galeri ring Motion memakai ilustrasi unDraw berlabel Contoh", async () => {
+test("galeri setengah cincin menampilkan lima foto berlabel Contoh", async () => {
   const config = await baca("../assets/js/config.js");
   const content = await baca("../assets/js/content.js");
   const html = await baca("../index.html");
   const css = await baca("../assets/css/pages.css");
   const ilustrasi = await baca("../assets/js/illustrations.js");
   assert.match(config, /gallery: true/);
-  assert.match(config, /illustration: "seni"/);
+  assert.match(config, /id: "contoh-5"/);
   assert.match(config, /label: "Contoh"/);
-  assert.match(content, /muatMotion\(\)/);
-  assert.match(content, /stagger\(0\.08\)/);
-  assert.match(content, /pointerdown/);
+  assert.match(content, /-160 \+ indeks \* busur/);
+  assert.match(content, /gallery-trigger/);
+  assert.match(content, /geserFokus/);
+  assert.match(content, /pointerup/);
   assert.match(content, /setAttribute\("aria-label"/);
-  assert.match(content, /sudutWajar/);
-  assert.match(content, /baris\.inert = !tampak/);
-  assert.match(content, /is-tampak/);
+  assert.match(content, /is-utama/);
+  assert.doesNotMatch(content, /muatMotion|stagger/);
   assert.match(html, /gallery-ring[^>]*tabindex="0"/);
   assert.match(html, /data-galeri-putar="-1"/);
   assert.match(css, /aspect-ratio: 34 \/ 22/);
   assert.match(css, /clamp\(8rem, 34vw, 12rem\)/);
-  assert.match(css, /\.gallery-ring > li\.is-tampak/);
+  assert.match(css, /\.gallery-ring\.is-animasi > li\.is-utama/);
   assert.match(css, /\.gallery-ring\.tanpa-gerak/);
   assert.match(ilustrasi, /var\(--color-accent\)/);
   assert.doesNotMatch(ilustrasi, /#[0-9a-fA-F]{3,8}\b/);
@@ -265,14 +291,14 @@ test("galeri fallback statis merender SVG ber-aria saat gerak dimatikan", async 
   initKontenTambahan();
 
   const ul = document.querySelector("[data-galeri-grid]");
-  assert.equal(ul.children.length, 4);
+  assert.equal(ul.children.length, 5);
   assert.ok(ul.classList.contains("tanpa-gerak"));
-  assert.equal(ul.querySelectorAll("svg[role='img']").length, 4);
+  assert.equal(ul.querySelectorAll("svg[role='img']").length, 5);
   assert.ok(ul.querySelector("svg").getAttribute("aria-label").startsWith("Contoh"));
   assert.equal(ul.querySelector("svg").getAttribute("width"), "120");
-  assert.equal(ul.querySelectorAll(".gallery-label").length, 4);
+  assert.equal(ul.querySelectorAll(".gallery-label").length, 5);
   assert.equal(document.querySelector("[data-galeri-kendali]").hidden, true);
-  assert.match(document.querySelector("[data-galeri-status]").textContent, /Ilustrasi 1 dari 4/);
+  assert.match(document.querySelector("[data-galeri-status]").textContent, /Foto 1 dari 5/);
   delete globalThis.document;
   delete globalThis.DOMParser;
   delete globalThis.matchMedia;
@@ -316,7 +342,7 @@ test("tutup botol dan aroma dapat dikendalikan dengan keyboard", async () => {
   assert.match(html, /data-aroma/);
   assert.match(html, /data-aroma-status/);
   assert.doesNotMatch(html, /<div class="hero-visual" aria-hidden="true">/);
-  assert.match(js, /muatMotion/);
+  assert.doesNotMatch(js, /muatMotion/);
   assert.match(js, /aria-pressed/);
 });
 

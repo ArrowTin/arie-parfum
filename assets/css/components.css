@@ -267,8 +267,9 @@
   border-top: var(--border-none);
   border-inline: var(--border-none);
   border-bottom: var(--border-width) solid color-mix(in srgb, var(--color-accent-strong) 22%, transparent);
-  border-radius: var(--radius-none);
-  transition: box-shadow var(--motion-base) var(--ease-out),
+  border-radius: var(--radius-none) var(--radius-none) var(--radius-lg) var(--radius-lg);
+  transition: border-radius var(--motion-base) var(--ease-out),
+    box-shadow var(--motion-base) var(--ease-out),
     border-color var(--motion-base) var(--ease-out);
 }
 
@@ -387,8 +388,9 @@
   transform: scaleX(1);
 }
 
-.nav-list a:hover {
-  background: color-mix(in srgb, var(--color-muted) 78%, transparent);
+.nav-list a:is(:hover, :focus-visible) {
+  color: var(--color-accent-strong);
+  background: color-mix(in srgb, var(--color-highlight) 16%, transparent);
 }
 
 .nav-list.is-open li {
@@ -468,7 +470,7 @@
   font-size: var(--text-4xl);
 }
 
-/* Video Text: tekstur bergerak tipis di dalam huruf, teks asli tetap terbaca. */
+/* Video Text: tekstur tipis di belakang huruf, judul tetap paling atas. */
 .judul-video {
   position: relative;
   isolation: isolate;
@@ -476,31 +478,34 @@
   max-width: 100%;
 }
 
+.judul-video [data-video-text-label] {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 var(--space-xs) var(--space-md)
+    color-mix(in srgb, var(--color-card) 88%, transparent);
+}
+
 .video-text-media {
   position: absolute;
+  z-index: 1;
   inset: var(--space-none);
   display: none;
+  overflow: hidden;
+  border-radius: var(--radius-md);
   pointer-events: none;
-  mask-image: var(--video-text-mask);
-  -webkit-mask-image: var(--video-text-mask);
-  mask-size: 100% 100%;
-  -webkit-mask-size: 100% 100%;
-  mask-repeat: no-repeat;
-  -webkit-mask-repeat: no-repeat;
-  mask-position: center;
-  -webkit-mask-position: center;
+  opacity: 0;
+  transition: opacity var(--motion-slow) var(--ease-out);
 }
 
 .video-text-media.is-aktif {
   display: block;
+  opacity: 0.24;
 }
 
 .video-text-media video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.38;
-  mix-blend-mode: multiply;
 }
 
 .hero-tagline {
@@ -605,20 +610,28 @@
   border-radius: var(--radius-full);
   background: color-mix(in srgb, var(--color-highlight) 70%, transparent);
   opacity: 0;
+  transform: translateY(var(--space-none)) scale(0.7);
+  transition: transform var(--motion-glide) var(--ease-glide),
+    opacity var(--motion-base) var(--ease-out);
 }
+
+.aroma span:nth-child(2) { transition-delay: var(--motion-fast); }
+.aroma span:nth-child(3) { transition-delay: var(--motion-base); }
+.aroma span:nth-child(4) { transition-delay: var(--motion-slow); }
 
 .aroma span:nth-child(1) { left: calc(50% - var(--space-xl)); }
 .aroma span:nth-child(2) { left: calc(50% - var(--space-md)); }
 .aroma span:nth-child(3) { left: calc(50% + var(--space-md)); }
 .aroma span:nth-child(4) { left: calc(50% + var(--space-xl)); }
 
-/* Keadaan tanpa Motion: tutup terangkat dan aroma tampak statis. */
+/* Tutup terangkat dan aroma menguap memakai transisi CSS, tanpa Motion. */
 .flacon[aria-pressed="true"] .botol-tutup-grup {
   transform: translateY(calc(var(--space-sm) * -1)) rotate(12deg);
 }
 
 .flacon[aria-pressed="true"] .aroma span {
-  opacity: 0.4;
+  opacity: 0.55;
+  transform: translateY(calc(var(--space-xl) * -1)) scale(1.1);
 }
 
 .botol {
@@ -639,6 +652,7 @@
 .botol-tutup-grup {
   transform-box: fill-box;
   transform-origin: center;
+  transition: transform var(--motion-slow) var(--ease-glide);
 }
 
 .botol-tutup-garis {
@@ -733,12 +747,14 @@
   color: var(--color-on-primary);
 }
 
+/* Footer: garis kaca diredupkan agar transisi dari halaman terasa mulus. */
 .site-footer .chrome-bg::before {
   background: linear-gradient(var(--light-angle),
-    color-mix(in srgb, var(--color-primary) 82%, transparent),
-    color-mix(in srgb, var(--color-primary) 64%, transparent));
-  border-color: color-mix(in srgb, var(--color-highlight) 38%, transparent);
-  outline-color: color-mix(in srgb, var(--color-highlight) 16%, transparent);
+    color-mix(in srgb, var(--color-primary) 88%, transparent),
+    color-mix(in srgb, var(--color-primary) 74%, transparent));
+  border-color: color-mix(in srgb, var(--color-highlight) 12%, transparent);
+  outline-color: var(--color-transparent);
+  box-shadow: none;
 }
 
 .site-footer .chrome-blob {
@@ -819,7 +835,7 @@
   z-index: 2;
   margin-top: var(--space-xl);
   padding-top: var(--space-md);
-  border-top: var(--border-width) solid color-mix(in srgb, var(--color-highlight) 22%, transparent);
+  border-top: var(--border-width) solid color-mix(in srgb, var(--color-highlight) 12%, transparent);
   font-size: var(--text-sm);
   text-align: center;
   opacity: 0.82;

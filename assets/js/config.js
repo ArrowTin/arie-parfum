@@ -24,6 +24,7 @@ export const CONFIG = {
       { id: "contoh-2", illustration: "hadiah", alt: "Contoh ilustrasi perayaan", label: "Contoh" },
       { id: "contoh-3", illustration: "seni", alt: "Contoh ilustrasi meja kerja", label: "Contoh" },
       { id: "contoh-4", illustration: "hadiah", alt: "Contoh ilustrasi perayaan", label: "Contoh" },
+      { id: "contoh-5", illustration: "seni", alt: "Contoh ilustrasi meja kerja", label: "Contoh" },
     ],
     testimonials: [], // [?] kutipan pelanggan belum diizinkan
   },

@@ -522,7 +522,7 @@
   border-radius: var(--radius-lg);
 }
 
-/* Galeri setengah cincin: hanya busur atas yang tampak; kartu masuk/keluar di tepi. */
+/* Galeri setengah cincin: lima foto tampak sekaligus pada busur atas. */
 .gallery-ring {
   position: relative;
   display: block;
@@ -532,9 +532,6 @@
   overflow: hidden;
   border-radius: var(--radius-xl);
   touch-action: pan-y;
-  transform-origin: 50% 50%;
-  mask-image: linear-gradient(90deg, var(--color-transparent), var(--color-card) 12%, var(--color-card) 88%, var(--color-transparent));
-  -webkit-mask-image: linear-gradient(90deg, var(--color-transparent), var(--color-card) 12%, var(--color-card) 88%, var(--color-transparent));
 }
 
 .gallery-ring:focus-visible {
@@ -547,17 +544,22 @@
   position: absolute;
   left: calc(50% + var(--x));
   top: calc(50% + var(--y));
+  z-index: 1;
   width: clamp(8rem, 34vw, 12rem);
   translate: -50% -50%;
+  transform: scale(1);
   transform-origin: 50% 50%;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--motion-base) var(--ease-out);
+  transition: transform var(--motion-slow) var(--ease-glide),
+    opacity var(--motion-base) var(--ease-out);
 }
 
-.gallery-ring > li.is-tampak {
-  opacity: 1;
-  pointer-events: auto;
+.gallery-ring.is-animasi > li.is-utama {
+  z-index: 2;
+  transform: scale(1.06);
+}
+
+.gallery-ring.is-menyeret > li {
+  transition-duration: var(--motion-none);
 }
 
 .gallery-card {
@@ -581,6 +583,20 @@
 .gallery-card.is-tampak:is(:hover, :focus-within) {
   border-color: var(--color-accent);
   box-shadow: var(--shadow-md);
+}
+
+.gallery-trigger {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: var(--space-none);
+  border-radius: var(--radius-md);
+  transition: transform var(--motion-base) var(--ease-glide);
+}
+
+.gallery-trigger:is(:hover, :focus-visible) {
+  transform: scale(1.05);
 }
 
 .gallery-card svg {
@@ -630,6 +646,89 @@
   color: var(--color-accent-strong);
   font-size: var(--text-sm);
   font-weight: var(--fw-semibold);
+}
+
+/* Pembesaran foto: lapisan memudar, panel naik, gambar mengembang. */
+.zoom-overlay {
+  position: fixed;
+  z-index: 60;
+  inset: var(--space-none);
+  display: grid;
+  place-items: center;
+  padding: var(--space-md);
+  background: color-mix(in srgb, var(--color-primary) 72%, transparent);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  opacity: 0;
+  transition: opacity var(--motion-base) var(--ease-out);
+}
+
+.zoom-overlay.is-buka {
+  opacity: 1;
+}
+
+.zoom-panel {
+  position: relative;
+  width: min(100%, 32rem);
+  padding: var(--space-lg);
+  border-radius: var(--radius-xl);
+  text-align: center;
+  transform: translateY(var(--motion-shift)) scale(0.94);
+  transition: transform var(--motion-slow) var(--ease-glide);
+}
+
+.zoom-overlay.is-buka .zoom-panel {
+  transform: none;
+}
+
+.zoom-stage {
+  display: grid;
+  place-items: center;
+  min-height: 12rem;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.zoom-stage svg,
+.zoom-stage img {
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  transform: scale(0.9);
+  transition: transform var(--motion-glide) var(--ease-glide);
+}
+
+.zoom-overlay.is-buka .zoom-stage svg,
+.zoom-overlay.is-buka .zoom-stage img {
+  transform: scale(1);
+}
+
+.zoom-label {
+  margin-top: var(--space-md);
+  color: var(--color-accent-strong);
+  font-weight: var(--fw-semibold);
+}
+
+.zoom-close {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border-radius: var(--radius-full);
+  color: var(--color-primary);
+  font-size: var(--text-2xl);
+  line-height: 1;
+  transition: background var(--motion-base) var(--ease-out),
+    transform var(--motion-base) var(--ease-glide);
+}
+
+.zoom-close:is(:hover, :focus-visible) {
+  background: color-mix(in srgb, var(--color-highlight) 28%, transparent);
+  transform: rotate(90deg);
 }
 
 .gallery-ring.tanpa-gerak {
