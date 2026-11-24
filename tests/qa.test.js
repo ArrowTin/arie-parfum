@@ -123,6 +123,56 @@ test("tilt flacon hanya aktif pada pointer halus dan menghormati reduced-motion"
   assert.doesNotMatch(js, /classList\.add\("reveal"\)/);
 });
 
+test("galeri ring Motion memakai ilustrasi unDraw berlabel Contoh", async () => {
+  const config = await baca("../assets/js/config.js");
+  const content = await baca("../assets/js/content.js");
+  const html = await baca("../index.html");
+  const css = await baca("../assets/css/pages.css");
+  const ilustrasi = await baca("../assets/js/illustrations.js");
+  assert.match(config, /gallery: true/);
+  assert.match(config, /illustration: "seni"/);
+  assert.match(config, /label: "Contoh"/);
+  assert.match(content, /muatMotion\(\)/);
+  assert.match(content, /stagger\(0\.08\)/);
+  assert.match(content, /pointerdown/);
+  assert.match(content, /setAttribute\("aria-label"/);
+  assert.match(html, /gallery-ring[^>]*tabindex="0"/);
+  assert.match(html, /data-galeri-putar="-1"/);
+  assert.match(css, /\.gallery-ring\.tanpa-gerak/);
+  assert.match(ilustrasi, /var\(--color-accent\)/);
+  assert.doesNotMatch(ilustrasi, /#[0-9a-fA-F]{3,8}\b/);
+});
+
+test("galeri fallback statis merender SVG ber-aria saat gerak dimatikan", async () => {
+  const { JSDOM } = await import("jsdom");
+  const dom = new JSDOM(`<!doctype html><html><body>
+    <section data-galeri hidden>
+      <ul data-galeri-grid></ul>
+      <div data-galeri-kendali>
+        <p data-galeri-status></p>
+      </div>
+    </section>
+  </body></html>`);
+  globalThis.document = dom.window.document;
+  globalThis.DOMParser = dom.window.DOMParser;
+  globalThis.matchMedia = () => ({ matches: true });
+  const { initKontenTambahan } = await import("../assets/js/content.js?galeri-qa");
+  initKontenTambahan();
+
+  const ul = document.querySelector("[data-galeri-grid]");
+  assert.equal(ul.children.length, 4);
+  assert.ok(ul.classList.contains("tanpa-gerak"));
+  assert.equal(ul.querySelectorAll("svg[role='img']").length, 4);
+  assert.ok(ul.querySelector("svg").getAttribute("aria-label").startsWith("Contoh"));
+  assert.equal(ul.querySelector("svg").getAttribute("width"), "120");
+  assert.equal(ul.querySelectorAll(".gallery-label").length, 4);
+  assert.equal(document.querySelector("[data-galeri-kendali]").hidden, true);
+  assert.match(document.querySelector("[data-galeri-status]").textContent, /Ilustrasi 1 dari 4/);
+  delete globalThis.document;
+  delete globalThis.DOMParser;
+  delete globalThis.matchMedia;
+});
+
 test("varian tombol Uiverse memakai token dan aksesibel", async () => {
   const css = await baca("../assets/css/components.css");
   const html = await baca("../index.html");

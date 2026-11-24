@@ -18,13 +18,19 @@ export const CONFIG = {
     hours: { is24h: true }, // [?] perlu konfirmasi pemilik
     social: { instagram: null, facebook: null, tiktok: null },
     about: null, // [?] cerita toko belum disiapkan
-    gallery: [], // [?] foto belum ada/izin belum ada
+    // [?] Foto asli belum ada: placeholder memakai ilustrasi unDraw berlabel "Contoh".
+    gallery: [
+      { id: "contoh-1", illustration: "seni", alt: "Contoh ilustrasi meja kerja", label: "Contoh" },
+      { id: "contoh-2", illustration: "hadiah", alt: "Contoh ilustrasi perayaan", label: "Contoh" },
+      { id: "contoh-3", illustration: "seni", alt: "Contoh ilustrasi meja kerja", label: "Contoh" },
+      { id: "contoh-4", illustration: "hadiah", alt: "Contoh ilustrasi perayaan", label: "Contoh" },
+    ],
     testimonials: [], // [?] kutipan pelanggan belum diizinkan
   },
   features: {
     showPrices: false, // [?] harga belum ditentukan
     promo: false,
-    gallery: false,
+    gallery: true, // [?] aktif dengan placeholder; matikan bila foto asli belum ingin ditampilkan
     testimonials: false,
     claimOriginal: false, // [?] klaim original tidak ditampilkan
     delivery: false, // [?] antar/COD belum dikonfirmasi
