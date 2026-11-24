@@ -6,6 +6,7 @@ import { initPromo } from "./promo.js";
 import { initKontenTambahan } from "./content.js";
 import { muatMotion } from "./motion-ui.js";
 import { initVideoText } from "./video-text.js";
+import { mainkanAudioTutup } from "./botol-audio.js";
 
 // Isi teks dari config ke semua elemen penanda.
 function isiPenanda(penanda, nilai) {
@@ -85,6 +86,7 @@ export function initFlacon() {
 
   flacon.addEventListener("click", async () => {
     terbuka = !terbuka;
+    mainkanAudioTutup(terbuka);
     flacon.setAttribute("aria-pressed", String(terbuka));
     if (status) status.textContent = terbuka ? "Aroma dikeluarkan." : "Tutup botol dipasang kembali.";
     hentikanAnimasi();

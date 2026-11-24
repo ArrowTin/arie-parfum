@@ -106,6 +106,7 @@ test("beranda lokal di bawah 1 MB (font eksternal tidak dihitung)", async () => 
     "../assets/js/main.js", "../assets/js/config.js", "../assets/js/whatsapp.js",
     "../assets/js/catalog.js", "../assets/js/products.js", "../assets/js/detail.js",
     "../assets/js/promo.js", "../assets/js/content.js", "../assets/js/video-text.js",
+    "../assets/js/botol-audio.js",
     "../assets/video/arie-video-text.webm", "../data/products.json",
   ];
   let total = 0;
@@ -122,6 +123,22 @@ test("tilt flacon hanya aktif pada pointer halus dan menghormati reduced-motion"
   assert.match(js, /IntersectionObserver/);
   assert.match(html, /data-flacon/);
   assert.doesNotMatch(js, /classList\.add\("reveal"\)/);
+});
+
+test("audio tutup botol disintesis saat klik tanpa autoplay", async () => {
+  const html = await baca("../index.html");
+  const js = await baca("../assets/js/main.js");
+  const audio = await baca("../assets/js/botol-audio.js");
+  const dasar = await baca("../assets/css/base.css");
+  assert.match(html, /data-flacon/);
+  assert.match(js, /mainkanAudioTutup\(terbuka\)/);
+  assert.match(js, /flacon\.addEventListener\("click"/);
+  assert.match(audio, /AudioContext/);
+  assert.match(audio, /bisaGerak\(\)/);
+  assert.match(audio, /saveData/);
+  assert.doesNotMatch(audio, /autoplay/);
+  assert.doesNotMatch(html, /<audio\b/);
+  assert.match(dasar, /prefers-reduced-motion: reduce/);
 });
 
 test("Video Text judul memakai video lokal, mask SVG, dan fallback aman", async () => {
