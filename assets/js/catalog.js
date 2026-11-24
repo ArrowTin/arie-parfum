@@ -104,7 +104,7 @@ export function buatKartu(produk, namaKategori) {
   belakang.append(buat("p", "product-price", formatHarga(produk)));
   belakang.append(buat("p", "product-meta", `Stok: ${NAMA_STOK[produk.stock] ?? produk.stock}`));
 
-  const tautan = buat("a", "btn btn-accent", "Tanya / pesan via WA");
+  const tautan = buat("a", "btn btn-accent btn-card", "Tanya / pesan via WA");
   tautan.href = productInquiryLink(produk);
   tautan.target = "_blank";
   tautan.rel = "noopener noreferrer";

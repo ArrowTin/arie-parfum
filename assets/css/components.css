@@ -92,6 +92,80 @@
   transform: scale(0.97);
 }
 
+/* Varian Uiverse (MIT, lihat assets/css/UIVERSE-LICENSE.md) disesuaikan ke token. */
+.btn-wa {
+  background: linear-gradient(var(--light-angle),
+    var(--color-accent), var(--color-accent-strong));
+  box-shadow: inset var(--border-width) var(--border-width) var(--border-width)
+    color-mix(in srgb, var(--color-highlight) 45%, transparent);
+  letter-spacing: var(--space-xs);
+}
+
+.btn-wa:hover {
+  box-shadow: inset var(--border-width) var(--border-width) var(--border-width)
+      color-mix(in srgb, var(--color-highlight) 60%, transparent),
+    var(--shadow-md);
+}
+
+.btn-wa:active {
+  letter-spacing: var(--space-none);
+}
+
+.btn-route {
+  overflow: hidden;
+  perspective: 300px;
+}
+
+.btn-route > span {
+  display: block;
+  transition: transform var(--motion-base) var(--ease-glide),
+    opacity var(--motion-base) var(--ease-out);
+}
+
+.btn-route::after {
+  content: attr(data-alt);
+  position: absolute;
+  inset: var(--space-none);
+  display: grid;
+  place-items: center;
+  border-radius: inherit;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  opacity: 0;
+  transform: rotateX(90deg);
+  transition: transform var(--motion-base) var(--ease-glide),
+    opacity var(--motion-base) var(--ease-out);
+}
+
+.btn-route:hover > span,
+.btn-route:focus-visible > span {
+  opacity: 0;
+  transform: rotateX(-90deg);
+}
+
+.btn-route:hover::after,
+.btn-route:focus-visible::after {
+  opacity: 1;
+  transform: rotateX(0);
+}
+
+.btn-card::before {
+  content: "";
+  position: absolute;
+  inset: var(--space-none);
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--space-md) 50%,
+    color-mix(in srgb, var(--color-highlight) 70%, transparent), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--motion-base) var(--ease-out);
+}
+
+.btn-card:hover::before,
+.btn-card:focus-visible::before {
+  opacity: 1;
+}
+
 .site-header {
   position: sticky;
   top: var(--space-none);

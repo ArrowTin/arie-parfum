@@ -123,6 +123,21 @@ test("tilt flacon hanya aktif pada pointer halus dan menghormati reduced-motion"
   assert.doesNotMatch(js, /classList\.add\("reveal"\)/);
 });
 
+test("varian tombol Uiverse memakai token dan aksesibel", async () => {
+  const css = await baca("../assets/css/components.css");
+  const html = await baca("../index.html");
+  const js = await baca("../assets/js/catalog.js");
+  const lisensi = await baca("../assets/css/UIVERSE-LICENSE.md");
+  assert.match(css, /\.btn-wa \{/);
+  assert.match(css, /\.btn-route::after \{/);
+  assert.match(css, /\.btn-card::before \{/);
+  assert.match(html, /btn btn-accent btn-wa header-wa/);
+  assert.match(html, /data-alt="Buka peta"/);
+  assert.match(js, /btn btn-accent btn-card/);
+  assert.match(lisensi, /MIT License/);
+  assert.doesNotMatch(css, /#[0-9a-fA-F]{3,8}/);
+});
+
 test("kartu katalog memakai flip card dengan sisi depan judul saja", async () => {
   const js = await baca("../assets/js/catalog.js");
   const css = await baca("../assets/css/pages.css");
