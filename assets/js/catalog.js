@@ -66,6 +66,7 @@ export function buatKartu(produk, namaKategori) {
   const depan = buat("div", "flip-face flip-front");
   const belakang = buat("div", "flip-face flip-back");
   belakang.setAttribute("aria-hidden", "true");
+  belakang.inert = true;
 
   depan.append(gambarDepan(produk));
   depan.append(buat("h3", undefined, produk.name));
@@ -115,6 +116,8 @@ export function buatKartu(produk, namaKategori) {
     buka.setAttribute("aria-expanded", String(keBelakang));
     depan.setAttribute("aria-hidden", String(keBelakang));
     belakang.setAttribute("aria-hidden", String(!keBelakang));
+    depan.inert = keBelakang;
+    belakang.inert = !keBelakang;
     (keBelakang ? tutup : buka).focus();
   };
   buka.addEventListener("click", () => balik(true));
