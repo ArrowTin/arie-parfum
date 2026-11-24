@@ -105,7 +105,8 @@ test("beranda lokal di bawah 1 MB (font eksternal tidak dihitung)", async () => 
     "../assets/css/components.css", "../assets/css/pages.css",
     "../assets/js/main.js", "../assets/js/config.js", "../assets/js/whatsapp.js",
     "../assets/js/catalog.js", "../assets/js/products.js", "../assets/js/detail.js",
-    "../assets/js/promo.js", "../assets/js/content.js", "../data/products.json",
+    "../assets/js/promo.js", "../assets/js/content.js", "../assets/js/video-text.js",
+    "../assets/video/arie-video-text.webm", "../data/products.json",
   ];
   let total = 0;
   for (const nama of berkas) total += (await baca(nama)).length;
@@ -121,6 +122,26 @@ test("tilt flacon hanya aktif pada pointer halus dan menghormati reduced-motion"
   assert.match(js, /IntersectionObserver/);
   assert.match(html, /data-flacon/);
   assert.doesNotMatch(js, /classList\.add\("reveal"\)/);
+});
+
+test("Video Text judul memakai video lokal, mask SVG, dan fallback aman", async () => {
+  const html = await baca("../index.html");
+  const js = await baca("../assets/js/video-text.js");
+  const css = await baca("../assets/css/components.css");
+  const lisensi = await baca("../assets/js/MAGICUI-LICENSE.md");
+  const video = await readFile(new URL("../assets/video/arie-video-text.webm", import.meta.url));
+  assert.match(html, /data-video-text-label data-config="name"/);
+  assert.match(html, /assets\/video\/arie-video-text\.webm/);
+  assert.match(html, /<h1 id="hero-judul" class="judul-video"/);
+  assert.equal((html.match(/<h1\b/g) ?? []).length, 1);
+  assert.match(js, /createElementNS\(NS, "text"\)/);
+  assert.match(js, /encodeURIComponent\(svg\)/);
+  assert.match(js, /bisaGerak\(\)/);
+  assert.match(js, /IntersectionObserver/);
+  assert.doesNotMatch(js, /innerHTML/);
+  assert.match(css, /mask-image: var\(--video-text-mask\)/);
+  assert.match(lisensi, /magicui/);
+  assert.ok(video.length > 1000, "video lokal kosong");
 });
 
 test("chrome glass navbar/footer memakai bingkai Dylan dan gerak aman", async () => {

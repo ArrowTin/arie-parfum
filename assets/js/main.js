@@ -5,6 +5,7 @@ import { initDetail } from "./detail.js";
 import { initPromo } from "./promo.js";
 import { initKontenTambahan } from "./content.js";
 import { muatMotion } from "./motion-ui.js";
+import { initVideoText } from "./video-text.js";
 
 // Isi teks dari config ke semua elemen penanda.
 function isiPenanda(penanda, nilai) {
@@ -236,3 +237,4 @@ if (slug) {
 initPromo();
 initKontenTambahan();
 initFlacon();
+initVideoText();
