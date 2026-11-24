@@ -4,6 +4,7 @@ import { initCatalog } from "./catalog.js";
 import { initDetail } from "./detail.js";
 import { initPromo } from "./promo.js";
 import { initKontenTambahan } from "./content.js";
+import { muatMotion } from "./motion-ui.js";
 
 // Isi teks dari config ke semua elemen penanda.
 function isiPenanda(penanda, nilai) {
@@ -60,11 +61,52 @@ export function initDataUsaha() {
   }
 }
 
-// Tilt botol hero: hanya pada pointer halus, saat terlihat, dan tanpa reduced-motion/save-data.
+// Momen botol: tutup diputar dan aroma dikeluarkan dengan Motion saat ditekan.
 export function initFlacon() {
   const flacon = document.querySelector("[data-flacon]");
   if (!flacon) return;
 
+  const tutup = flacon.querySelector("[data-tutup]");
+  const aroma = Array.from(flacon.querySelectorAll("[data-aroma] > span"));
+  const status = flacon.querySelector("[data-aroma-status]");
+  if (!tutup || !aroma.length) return;
+
+  let terbuka = false;
+  let animasi = [];
+  let janjiMotion = null;
+
+  const hentikanAnimasi = () => {
+    animasi.forEach((butir) => {
+      butir?.stop?.();
+    });
+    animasi = [];
+  };
+
+  flacon.addEventListener("click", async () => {
+    terbuka = !terbuka;
+    flacon.setAttribute("aria-pressed", String(terbuka));
+    if (status) status.textContent = terbuka ? "Aroma dikeluarkan." : "Tutup botol dipasang kembali.";
+    hentikanAnimasi();
+
+    janjiMotion ??= muatMotion();
+    const pustaka = await janjiMotion;
+    if (!pustaka?.animate) return;
+
+    const { animate, stagger } = pustaka;
+    if (terbuka) {
+      animasi.push(animate(tutup, { rotate: 180, y: -14 }, { duration: 0.8, ease: "easeInOut" }));
+      animasi.push(animate(aroma, {
+        y: [0, -68],
+        opacity: [0, 0.75, 0],
+        scale: [0.6, 1.35],
+      }, { duration: 1.4, delay: stagger(0.12), repeat: 1 }));
+    } else {
+      animasi.push(animate(tutup, { rotate: 0, y: 0 }, { duration: 0.6, ease: "easeInOut" }));
+      animasi.push(animate(aroma, { y: 0, opacity: 0, scale: 1 }, { duration: 0.3 }));
+    }
+  });
+
+  // Tilt hanya pada pointer presisi, saat terlihat, dan tanpa reduced-motion/save-data.
   const media = globalThis.matchMedia;
   if (media?.("(prefers-reduced-motion: reduce)").matches) return;
   if (media?.("(hover: hover) and (pointer: fine)").matches === false) return;
@@ -173,7 +215,9 @@ const slug = new URLSearchParams(globalThis.location?.search ?? "").get("p");
 if (slug) {
   initDetail(slug);
 } else {
-  document.querySelectorAll("[data-catalog]").forEach((bagian) => initCatalog(bagian));
+  document.querySelectorAll("[data-catalog]").forEach((bagian) => {
+    initCatalog(bagian);
+  });
 }
 
 initPromo();

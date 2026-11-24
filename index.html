@@ -72,16 +72,25 @@
             <a class="btn btn-outline" data-route href="#" target="_blank" rel="noopener noreferrer">Lihat Rute</a>
           </div>
         </div>
-        <div class="hero-visual" aria-hidden="true">
-          <div class="flacon glass" data-flacon>
-            <span class="flacon-glint"></span>
-            <svg class="botol" viewBox="0 0 240 300" focusable="false">
-              <rect class="botol-tutup" x="94" y="16" width="52" height="34" rx="8"></rect>
+        <div class="hero-visual">
+          <button class="flacon glass" type="button" data-flacon
+            aria-label="Putar tutup botol untuk mengeluarkan aroma" aria-pressed="false">
+            <span class="flacon-glint" aria-hidden="true"></span>
+            <span class="aroma" data-aroma aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </span>
+            <svg class="botol" viewBox="0 0 240 300" aria-hidden="true" focusable="false">
               <path class="botol-badan" d="M75 60h90a18 18 0 0 1 18 18v172a26 26 0 0 1-26 26H83a26 26 0 0 1-26-26V78a18 18 0 0 1 18-18Z"></path>
               <path class="botol-kilau" d="M84 78v148"></path>
               <rect class="botol-label" x="78" y="142" width="84" height="70" rx="6"></rect>
+              <rect class="botol-mulut" x="104" y="48" width="32" height="12" rx="6"></rect>
+              <g class="botol-tutup-grup" data-tutup>
+                <rect class="botol-tutup" x="94" y="16" width="52" height="34" rx="8"></rect>
+                <path class="botol-tutup-garis" d="M94 30h52M94 38h52"></path>
+              </g>
             </svg>
-          </div>
+            <span class="visually-hidden" data-aroma-status aria-live="polite"></span>
+          </button>
         </div>
       </div>
     </section>

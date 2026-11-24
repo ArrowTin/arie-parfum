@@ -340,6 +340,38 @@
   transform: translateX(120%);
 }
 
+/* Aroma: empat tetes halus yang disemburkan dari mulut botol. */
+.aroma {
+  position: absolute;
+  inset: var(--space-none);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.aroma span {
+  position: absolute;
+  top: 22%;
+  width: var(--space-sm);
+  height: var(--space-sm);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-highlight) 70%, transparent);
+  opacity: 0;
+}
+
+.aroma span:nth-child(1) { left: calc(50% - var(--space-xl)); }
+.aroma span:nth-child(2) { left: calc(50% - var(--space-md)); }
+.aroma span:nth-child(3) { left: calc(50% + var(--space-md)); }
+.aroma span:nth-child(4) { left: calc(50% + var(--space-xl)); }
+
+/* Keadaan tanpa Motion: tutup terangkat dan aroma tampak statis. */
+.flacon[aria-pressed="true"] .botol-tutup-grup {
+  transform: translateY(calc(var(--space-sm) * -1)) rotate(12deg);
+}
+
+.flacon[aria-pressed="true"] .aroma span {
+  opacity: 0.4;
+}
+
 .botol {
   position: relative;
   z-index: 1;
@@ -349,6 +381,21 @@
 
 .botol-tutup {
   fill: var(--color-primary);
+}
+
+.botol-mulut {
+  fill: color-mix(in srgb, var(--color-primary) 80%, transparent);
+}
+
+.botol-tutup-grup {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.botol-tutup-garis {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-highlight) 70%, transparent);
+  stroke-width: 2;
 }
 
 .botol-badan {

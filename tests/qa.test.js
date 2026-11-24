@@ -123,6 +123,19 @@ test("tilt flacon hanya aktif pada pointer halus dan menghormati reduced-motion"
   assert.doesNotMatch(js, /classList\.add\("reveal"\)/);
 });
 
+test("tutup botol dan aroma dapat dikendalikan dengan keyboard", async () => {
+  const html = await baca("../index.html");
+  const js = await baca("../assets/js/main.js");
+  assert.match(html, /class="flacon glass" type="button"/);
+  assert.match(html, /aria-pressed="false"/);
+  assert.match(html, /data-tutup/);
+  assert.match(html, /data-aroma/);
+  assert.match(html, /data-aroma-status/);
+  assert.doesNotMatch(html, /<div class="hero-visual" aria-hidden="true">/);
+  assert.match(js, /muatMotion/);
+  assert.match(js, /aria-pressed/);
+});
+
 test("Motion dimuat malas dan menghormati reduced-motion serta save-data", async () => {
   const pembungkus = await baca("../assets/js/motion-ui.js");
   const pustaka = await baca("../assets/js/vendor/motion.min.js");
