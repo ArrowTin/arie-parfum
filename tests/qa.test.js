@@ -193,8 +193,14 @@ test("galeri ring Motion memakai ilustrasi unDraw berlabel Contoh", async () => 
   assert.match(content, /stagger\(0\.08\)/);
   assert.match(content, /pointerdown/);
   assert.match(content, /setAttribute\("aria-label"/);
+  assert.match(content, /sudutWajar/);
+  assert.match(content, /baris\.inert = !tampak/);
+  assert.match(content, /is-tampak/);
   assert.match(html, /gallery-ring[^>]*tabindex="0"/);
   assert.match(html, /data-galeri-putar="-1"/);
+  assert.match(css, /aspect-ratio: 34 \/ 22/);
+  assert.match(css, /clamp\(8rem, 34vw, 12rem\)/);
+  assert.match(css, /\.gallery-ring > li\.is-tampak/);
   assert.match(css, /\.gallery-ring\.tanpa-gerak/);
   assert.match(ilustrasi, /var\(--color-accent\)/);
   assert.doesNotMatch(ilustrasi, /#[0-9a-fA-F]{3,8}\b/);

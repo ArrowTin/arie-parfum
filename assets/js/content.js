@@ -43,7 +43,11 @@ function media(item) {
 
 function indeksAktif(sudut, jumlah) {
   const langkah = 360 / jumlah;
-  return ((Math.round(sudut / langkah) % jumlah) + jumlah) % jumlah;
+  return ((Math.round(-sudut / langkah) % jumlah) + jumlah) % jumlah;
+}
+
+function sudutWajar(sudut) {
+  return ((sudut + 180) % 360 + 360) % 360 - 180;
 }
 
 // Cincin radial: drag horizontal, panah, atau tombol; Motion dipakai bila diizinkan.
@@ -56,18 +60,24 @@ function initGaleriRing(galeri, data, cincin) {
   const kartu = data.map((item, indeks) => {
     const baris = buat("li", "gallery-card");
     const rad = ((-90 + indeks * langkah) * Math.PI) / 180;
-    baris.style.setProperty("--x", `${(Math.cos(rad) * 29).toFixed(2)}%`);
-    baris.style.setProperty("--y", `${(Math.sin(rad) * 30).toFixed(2)}%`);
+    baris.style.setProperty("--x", `${(Math.cos(rad) * 30).toFixed(2)}%`);
+    baris.style.setProperty("--y", `${(Math.sin(rad) * 25).toFixed(2)}%`);
     baris.append(media(item), buat("span", "gallery-label", item.label ?? "Contoh"));
     return baris;
   });
   cincin.append(...kartu);
 
   let sudutSekarang = 0;
-  const perbaruiStatus = () => {
+  const perbaruiTampilan = () => {
+    kartu.forEach((baris, indeks) => {
+      const sudut = sudutWajar(-90 + indeks * langkah + sudutSekarang);
+      const tampak = sudut >= -180 && sudut <= 0;
+      baris.classList.toggle("is-tampak", tampak);
+      baris.inert = !tampak;
+    });
     if (status) status.textContent = `Ilustrasi ${indeksAktif(sudutSekarang, jumlah) + 1} dari ${jumlah}`;
   };
-  perbaruiStatus();
+  perbaruiTampilan();
 
   const pakaiStatic = () => {
     cincin.classList.add("tanpa-gerak");
@@ -85,7 +95,7 @@ function initGaleriRing(galeri, data, cincin) {
       return;
     }
     const { animate, stagger } = pustaka;
-    animate(kartu, { opacity: [0, 1], scale: [0.86, 1] }, {
+    animate(kartu, { scale: [0.86, 1] }, {
       duration: 0.5,
       delay: stagger(0.08),
       ease: "easeOut",
@@ -95,7 +105,7 @@ function initGaleriRing(galeri, data, cincin) {
       sudutSekarang = tujuan;
       animate(cincin, { rotate: tujuan }, { duration: durasi, ease: "easeInOut" });
       animate(kartu, { rotate: -tujuan }, { duration: durasi, ease: "easeInOut" });
-      perbaruiStatus();
+      perbaruiTampilan();
     };
     const putar = (arah) =>
       putarKe(Math.round(sudutSekarang / langkah) * langkah + arah * langkah);
@@ -130,7 +140,7 @@ function initGaleriRing(galeri, data, cincin) {
       kartu.forEach((baris) => {
         baris.style.transform = `rotate(${-sudutSekarang}deg)`;
       });
-      perbaruiStatus();
+      perbaruiTampilan();
     });
     const selesai = () => {
       if (!menyeret) return;
