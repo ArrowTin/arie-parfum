@@ -371,6 +371,8 @@ test("font hanya meminta bobot yang dipakai dan katalog mencadangkan ruang", asy
   const css = await baca("../assets/css/pages.css");
   assert.match(css, /\.product-grid \{[\s\S]*?min-height: 87rem/);
   assert.match(css, /grid-template-columns: repeat\(3, 1fr\);\s*min-height: 43rem/);
+  assert.match(css, /grid-template-columns: repeat\(4, 1fr\);\s*min-height: 22rem/);
+  assert.match(css, /\.flip-icon \{[\s\S]*?calc\(var\(--space-xl\) \* 3\.75\)/);
   assert.match(css, /:root\[data-detail-route\] \.product-grid/);
   assert.match(css, /:root\[data-detail-route\] #utama \{[\s\S]*?height: 43rem/);
   assert.match(await baca("../produk.html"), /dataset\.detailRoute/);
