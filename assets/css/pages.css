@@ -250,16 +250,67 @@
 
 .contact-card,
 .map-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   margin: var(--space-none);
   padding: var(--space-lg);
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-highlight) 46%, var(--color-border));
   border-radius: var(--radius-lg);
-  background: var(--color-card);
+  background: linear-gradient(var(--light-angle),
+    color-mix(in srgb, var(--color-card) 94%, transparent),
+    color-mix(in srgb, var(--color-card) 74%, transparent));
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  box-shadow: var(--shadow-glass);
+  transition: border-color var(--motion-base) var(--ease-out),
+    box-shadow var(--motion-base) var(--ease-out),
+    opacity var(--motion-glide) var(--ease-glide),
+    transform var(--motion-glide) var(--ease-glide);
+}
+
+.contact-card::before,
+.map-card::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: var(--space-none);
+  pointer-events: none;
+  background: radial-gradient(circle at 100% 0,
+    color-mix(in srgb, var(--color-highlight) 42%, transparent),
+    var(--color-transparent) 62%);
+  opacity: 0;
+  transition: opacity var(--motion-base) var(--ease-out);
+}
+
+.contact-card:is(:hover, :focus-within),
+.map-card:is(:hover, :focus-within) {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-md);
+}
+
+.contact-card:is(:hover, :focus-within)::before,
+.map-card:is(:hover, :focus-within)::before {
+  opacity: 1;
 }
 
 .contact-card h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
   font-family: var(--font-body);
   font-size: var(--text-lg);
+  color: var(--color-accent-strong);
+}
+
+.contact-card h3::before {
+  content: "";
+  flex: none;
+  width: var(--space-md);
+  height: var(--space-md);
+  border-radius: var(--radius-full);
+  background: var(--color-accent);
+  box-shadow: 0 0 0 var(--space-xs) color-mix(in srgb, var(--color-highlight) 30%, transparent);
 }
 
 .contact-card p {
@@ -268,24 +319,56 @@
 }
 
 .contact-card a[data-tel] {
-  color: var(--color-accent);
+  color: var(--color-accent-strong);
   text-decoration: underline;
   text-underline-offset: var(--space-xs);
+  transition: color var(--motion-base) var(--ease-out);
+}
+
+.contact-card a[data-tel]:is(:hover, :focus-visible) {
+  color: var(--color-accent);
 }
 
 .map-card svg {
   width: var(--space-3xl);
   height: var(--space-3xl);
+  padding: var(--space-sm);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-highlight) 55%, transparent);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-highlight) 24%, transparent);
   fill: none;
   stroke: var(--color-accent);
   stroke-width: 2;
   stroke-linecap: round;
+  transition: background var(--motion-base) var(--ease-out),
+    border-color var(--motion-base) var(--ease-out);
+}
+
+.map-card:is(:hover, :focus-within) svg {
+  background: color-mix(in srgb, var(--color-highlight) 40%, transparent);
+  border-color: var(--color-accent);
 }
 
 .map-card figcaption {
   margin-top: var(--space-sm);
   color: var(--color-muted-foreground);
 }
+
+/* Muncul sekali saat masuk viewport; tanpa JS/reduced-motion tetap tampil. */
+.bisa-animasi .gallery-stage,
+.bisa-animasi .contact-card,
+.bisa-animasi .map-card {
+  opacity: 0;
+  transform: translateY(var(--motion-shift));
+}
+
+.bisa-animasi .is-muncul {
+  opacity: 1;
+  transform: none;
+}
+
+.bisa-animasi .contact-card:nth-child(2) { transition-delay: var(--motion-fast); }
+.bisa-animasi .map-card { transition-delay: var(--motion-base); }
 
 .map-actions {
   display: flex;
@@ -386,10 +469,51 @@
   to { opacity: 1; }
 }
 
+/* Panggung galeri: permukaan kaca senada hero agar galeri terasa satu halaman. */
+.gallery-stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: var(--space-lg);
+  padding: var(--space-lg);
+  border-radius: var(--radius-xl);
+  border-color: color-mix(in srgb, var(--color-highlight) 48%, transparent);
+  transition: border-color var(--motion-base) var(--ease-out),
+    box-shadow var(--motion-base) var(--ease-out);
+}
+
+.gallery-stage:is(:hover, :focus-within) {
+  border-color: color-mix(in srgb, var(--color-accent) 62%, transparent);
+  box-shadow: var(--shadow-md);
+}
+
+.gallery-stage-glow {
+  position: absolute;
+  z-index: -1;
+  top: calc(var(--space-3xl) * -1);
+  left: 18%;
+  width: 64%;
+  height: 70%;
+  border-radius: var(--radius-full);
+  pointer-events: none;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--color-highlight) 62%, transparent),
+    color-mix(in srgb, var(--color-accent) 24%, transparent) 58%,
+    var(--color-transparent) 74%);
+  filter: blur(var(--glass-blur-lg));
+  opacity: 0.65;
+  transition: transform var(--motion-glide) var(--ease-glide),
+    opacity var(--motion-glide) var(--ease-out);
+}
+
+.gallery-stage:is(:hover, :focus-within) .gallery-stage-glow {
+  transform: translate3d(4%, 6%, 0) scale(1.06);
+  opacity: 0.9;
+}
+
 .gallery-grid {
   display: grid;
   gap: var(--space-md);
-  margin-top: var(--space-lg);
 }
 
 .gallery-grid img {
@@ -441,11 +565,22 @@
   justify-items: center;
   gap: var(--space-xs);
   padding: var(--space-sm);
-  border: var(--border-width) solid var(--color-border);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-highlight) 48%, var(--color-border));
   border-radius: var(--radius-lg);
-  background: var(--color-card);
-  box-shadow: var(--shadow-md);
+  background: linear-gradient(var(--light-angle),
+    color-mix(in srgb, var(--color-card) 92%, transparent),
+    color-mix(in srgb, var(--color-card) 72%, transparent));
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  box-shadow: var(--shadow-glass);
   text-align: center;
+  transition: border-color var(--motion-base) var(--ease-out),
+    box-shadow var(--motion-base) var(--ease-out);
+}
+
+.gallery-card.is-tampak:is(:hover, :focus-within) {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-md);
 }
 
 .gallery-card svg {
@@ -469,11 +604,32 @@
   margin-top: var(--space-lg);
 }
 
+.gallery-controls .btn-outline {
+  min-width: var(--tap-min);
+  border-radius: var(--radius-full);
+  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
+  background: color-mix(in srgb, var(--color-card) 74%, transparent);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  transition: transform var(--motion-base) var(--ease-glide),
+    border-color var(--motion-base) var(--ease-out),
+    box-shadow var(--motion-base) var(--ease-out);
+}
+
+.gallery-controls .btn-outline:is(:hover, :focus-visible) {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-md);
+}
+
 .gallery-controls p {
   min-width: 8rem;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--color-highlight) 22%, var(--color-card));
   text-align: center;
-  color: var(--color-primary);
+  color: var(--color-accent-strong);
   font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
 }
 
 .gallery-ring.tanpa-gerak {
@@ -493,6 +649,16 @@
   translate: none;
   opacity: 1;
   pointer-events: auto;
+}
+
+@media (max-width: 29.99rem) {
+  .gallery-stage {
+    padding: var(--space-md);
+  }
+
+  .gallery-card svg {
+    max-height: 5rem;
+  }
 }
 
 @media (min-width: 48rem) {

@@ -4,7 +4,7 @@ import { initCatalog } from "./catalog.js";
 import { initDetail } from "./detail.js";
 import { initPromo } from "./promo.js";
 import { initKontenTambahan } from "./content.js";
-import { muatMotion } from "./motion-ui.js";
+import { bisaGerak, muatMotion } from "./motion-ui.js";
 import { initVideoText } from "./video-text.js";
 import { mainkanAudioTutup } from "./botol-audio.js";
 
@@ -196,6 +196,34 @@ export function initChrome() {
   globalThis.addEventListener?.("scroll", perbarui, { passive: true });
 }
 
+// Panggung galeri dan kartu kontak muncul halus sekali saat masuk viewport.
+export function initMuncul() {
+  if (!bisaGerak()) return;
+  const sasaran = document.querySelectorAll(".gallery-stage, .contact-card, .map-card");
+  if (!sasaran.length) return;
+
+  if (!("IntersectionObserver" in globalThis)) {
+    document.body.classList.add("bisa-animasi");
+    sasaran.forEach((elemen) => {
+      elemen.classList.add("is-muncul");
+    });
+    return;
+  }
+
+  const pengamat = new IntersectionObserver((entri) => {
+    entri.forEach((butir) => {
+      if (!butir.isIntersecting) return;
+      butir.target.classList.add("is-muncul");
+      pengamat.unobserve(butir.target);
+    });
+  }, { threshold: 0.12 });
+
+  document.body.classList.add("bisa-animasi");
+  sasaran.forEach((elemen) => {
+    pengamat.observe(elemen);
+  });
+}
+
 // Menu mobile: tombol membuka/ menutup daftar nav.
 export function initNavigasi() {
   const tombol = document.querySelector(".nav-toggle");
@@ -225,6 +253,7 @@ export function initNavigasi() {
 initDataUsaha();
 initSeo();
 initChrome();
+initMuncul();
 initNavigasi();
 
 const slug = new URLSearchParams(globalThis.location?.search ?? "").get("p");

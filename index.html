@@ -180,11 +180,14 @@
     <section class="content-section" id="galeri" data-galeri hidden aria-labelledby="galeri-judul">
       <div class="container">
         <h2 id="galeri-judul" class="section-title">Galeri</h2>
-        <ul class="gallery-grid gallery-ring" data-galeri-grid aria-label="Galeri ilustrasi" tabindex="0"></ul>
-        <div class="gallery-controls" data-galeri-kendali>
-          <button class="btn btn-outline" type="button" data-galeri-putar="-1" aria-label="Putar galeri ke kiri"><span aria-hidden="true">←</span></button>
-          <p data-galeri-status aria-live="polite"></p>
-          <button class="btn btn-outline" type="button" data-galeri-putar="1" aria-label="Putar galeri ke kanan"><span aria-hidden="true">→</span></button>
+        <div class="gallery-stage glass">
+          <span class="gallery-stage-glow" aria-hidden="true"></span>
+          <ul class="gallery-grid gallery-ring" data-galeri-grid aria-label="Galeri ilustrasi" tabindex="0"></ul>
+          <div class="gallery-controls" data-galeri-kendali>
+            <button class="btn btn-outline" type="button" data-galeri-putar="-1" aria-label="Putar galeri ke kiri"><span aria-hidden="true">←</span></button>
+            <p data-galeri-status aria-live="polite"></p>
+            <button class="btn btn-outline" type="button" data-galeri-putar="1" aria-label="Putar galeri ke kanan"><span aria-hidden="true">→</span></button>
+          </div>
         </div>
       </div>
     </section>

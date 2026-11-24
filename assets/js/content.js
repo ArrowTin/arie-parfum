@@ -61,7 +61,7 @@ function initGaleriRing(galeri, data, cincin) {
     const baris = buat("li", "gallery-card");
     const rad = ((-90 + indeks * langkah) * Math.PI) / 180;
     baris.style.setProperty("--x", `${(Math.cos(rad) * 30).toFixed(2)}%`);
-    baris.style.setProperty("--y", `${(Math.sin(rad) * 25).toFixed(2)}%`);
+    baris.style.setProperty("--y", `${(Math.sin(rad) * 15).toFixed(2)}%`);
     baris.append(media(item), buat("span", "gallery-label", item.label ?? "Contoh"));
     return baris;
   });

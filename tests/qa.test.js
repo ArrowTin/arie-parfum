@@ -125,6 +125,26 @@ test("tilt flacon hanya aktif pada pointer halus dan menghormati reduced-motion"
   assert.doesNotMatch(js, /classList\.add\("reveal"\)/);
 });
 
+test("panggung galeri dan kartu kontak menyatu dengan transisi aman", async () => {
+  const html = await baca("../index.html");
+  const css = await baca("../assets/css/pages.css");
+  const js = await baca("../assets/js/main.js");
+  const dasar = await baca("../assets/css/base.css");
+  const konten = await baca("../assets/js/content.js");
+  assert.match(html, /gallery-stage glass/);
+  assert.match(html, /gallery-stage-glow/);
+  assert.match(css, /\.gallery-stage:is\(:hover, :focus-within\)/);
+  assert.match(css, /\.gallery-card\.is-tampak:is\(:hover, :focus-within\)/);
+  assert.match(css, /\.contact-card::before/);
+  assert.match(css, /\.map-card:is\(:hover, :focus-within\) svg/);
+  assert.match(css, /\.bisa-animasi \.is-muncul/);
+  assert.match(js, /initMuncul\(\)/);
+  assert.match(js, /IntersectionObserver/);
+  assert.match(konten, /is-tampak/);
+  assert.match(dasar, /prefers-reduced-motion: reduce/);
+  assert.doesNotMatch(css, /#[0-9a-fA-F]{3,8}\b/);
+});
+
 test("integrasi refresh: fitur baru coexisting dan token tetap terpusat", async () => {
   const html = await baca("../index.html");
   const utama = await baca("../assets/js/main.js");
