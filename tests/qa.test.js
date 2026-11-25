@@ -351,6 +351,20 @@ test("tutup botol dan aroma dapat dikendalikan dengan keyboard", async () => {
   assert.match(js, /aria-pressed/);
 });
 
+test("gelembung aroma bervariasi dan label botol berbentuk ikon tetes", async () => {
+  const html = await baca("../index.html");
+  const css = await baca("../assets/css/components.css");
+  const aroma = /<span class="aroma"[\s\S]*?<svg class="botol"/.exec(html)?.[0] ?? "";
+  assert.equal((aroma.match(/<span><\/span>/g) ?? []).length, 8);
+  assert.match(html, /<path class="botol-label"/);
+  assert.match(html, /class="botol-label-tanda"/);
+  assert.doesNotMatch(html, /<rect class="botol-label"/);
+  assert.match(css, /@keyframes aroma-menguap/);
+  assert.match(css, /\.flacon\[aria-pressed="true"\] \.aroma span \{[\s\S]*?animation:/);
+  assert.match(css, /prefers-reduced-motion: reduce[\s\S]*?\.flacon\[aria-pressed="true"\] \.aroma span[\s\S]*?animation: none/);
+  assert.doesNotMatch(css, /#[0-9a-fA-F]{3,8}\b|rgba?\(/);
+});
+
 test("tanpa pustaka Motion: hanya transisi CSS yang menghormati gerak", async () => {
   const pembungkus = await baca("../assets/js/motion-ui.js");
   const paket = JSON.parse(await baca("../package.json"));

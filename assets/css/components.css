@@ -594,7 +594,7 @@
   transform: translateX(120%);
 }
 
-/* Aroma: empat tetes halus yang disemburkan dari mulut botol. */
+/* Aroma: delapan gelembung naik dari mulut botol saat tutup dibuka. */
 .aroma {
   position: absolute;
   inset: var(--space-none);
@@ -603,35 +603,136 @@
 }
 
 .aroma span {
+  --aroma-ukuran: var(--space-sm);
+  --aroma-drift: var(--space-none);
+  --aroma-naik: var(--space-2xl);
+  --aroma-durasi: var(--motion-glide);
+  --aroma-tunda: var(--motion-none);
   position: absolute;
-  top: 22%;
-  width: var(--space-sm);
-  height: var(--space-sm);
+  top: 20%;
+  left: var(--space-none);
+  width: var(--aroma-ukuran);
+  height: var(--aroma-ukuran);
   border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--color-highlight) 70%, transparent);
+  background: color-mix(in srgb, var(--color-highlight) 78%, transparent);
+  box-shadow: inset var(--space-none) var(--border-width) var(--space-none)
+    color-mix(in srgb, var(--color-card) 80%, transparent),
+    var(--space-none) var(--space-none) var(--space-sm)
+    color-mix(in srgb, var(--color-highlight) 45%, transparent);
   opacity: 0;
-  transform: translateY(var(--space-none)) scale(0.7);
-  transition: transform var(--motion-glide) var(--ease-glide),
-    opacity var(--motion-base) var(--ease-out);
+  transform: translate3d(var(--space-none), var(--space-none), var(--space-none)) scale(0.45);
 }
 
-.aroma span:nth-child(2) { transition-delay: var(--motion-fast); }
-.aroma span:nth-child(3) { transition-delay: var(--motion-base); }
-.aroma span:nth-child(4) { transition-delay: var(--motion-slow); }
+.aroma span:nth-child(1) {
+  left: calc(50% - var(--space-xl));
+  --aroma-ukuran: var(--space-xs);
+  --aroma-drift: calc(var(--space-md) * -0.8);
+  --aroma-naik: var(--space-xl);
+  --aroma-durasi: calc(var(--motion-glide) * 0.95);
+}
 
-.aroma span:nth-child(1) { left: calc(50% - var(--space-xl)); }
-.aroma span:nth-child(2) { left: calc(50% - var(--space-md)); }
-.aroma span:nth-child(3) { left: calc(50% + var(--space-md)); }
-.aroma span:nth-child(4) { left: calc(50% + var(--space-xl)); }
+.aroma span:nth-child(2) {
+  left: calc(50% - var(--space-md));
+  --aroma-ukuran: var(--space-sm);
+  --aroma-drift: calc(var(--space-sm) * -1);
+  --aroma-naik: var(--space-2xl);
+  --aroma-durasi: calc(var(--motion-glide) * 1.15);
+  --aroma-tunda: calc(var(--motion-fast) * 0.4);
+}
 
-/* Tutup terangkat dan aroma menguap memakai transisi CSS, tanpa Motion. */
+.aroma span:nth-child(3) {
+  left: 50%;
+  --aroma-ukuran: var(--space-md);
+  --aroma-drift: var(--space-sm);
+  --aroma-naik: calc(var(--space-2xl) * 0.85);
+  --aroma-durasi: calc(var(--motion-glide) * 0.85);
+  --aroma-tunda: calc(var(--motion-base) * 0.3);
+}
+
+.aroma span:nth-child(4) {
+  left: calc(50% + var(--space-md));
+  --aroma-ukuran: var(--space-xs);
+  --aroma-drift: var(--space-md);
+  --aroma-naik: var(--space-2xl);
+  --aroma-durasi: calc(var(--motion-glide) * 1.25);
+  --aroma-tunda: calc(var(--motion-slow) * 0.3);
+}
+
+.aroma span:nth-child(5) {
+  left: calc(50% + var(--space-xl));
+  --aroma-ukuran: var(--space-sm);
+  --aroma-drift: calc(var(--space-lg) * 0.8);
+  --aroma-naik: var(--space-xl);
+  --aroma-durasi: calc(var(--motion-glide) * 1.05);
+  --aroma-tunda: calc(var(--motion-base) * 0.6);
+}
+
+.aroma span:nth-child(6) {
+  left: calc(50% - var(--space-lg));
+  --aroma-ukuran: var(--space-xs);
+  --aroma-drift: calc(var(--space-sm) * -1.5);
+  --aroma-naik: var(--space-2xl);
+  --aroma-durasi: calc(var(--motion-glide) * 1.35);
+  --aroma-tunda: calc(var(--motion-slow) * 0.6);
+}
+
+.aroma span:nth-child(7) {
+  left: calc(50% + var(--space-sm));
+  --aroma-ukuran: var(--space-sm);
+  --aroma-drift: var(--space-xs);
+  --aroma-naik: calc(var(--space-2xl) * 0.9);
+  --aroma-durasi: calc(var(--motion-glide) * 0.9);
+  --aroma-tunda: calc(var(--motion-fast) * 0.8);
+}
+
+.aroma span:nth-child(8) {
+  left: calc(50% - var(--space-sm));
+  --aroma-ukuran: var(--space-xs);
+  --aroma-drift: calc(var(--space-sm) * -0.5);
+  --aroma-naik: calc(var(--space-2xl) * 1.1);
+  --aroma-durasi: calc(var(--motion-glide) * 1.45);
+  --aroma-tunda: calc(var(--motion-slow) * 0.9);
+}
+
+@keyframes aroma-menguap {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--space-none), var(--space-none), var(--space-none)) scale(0.45);
+  }
+
+  20% {
+    opacity: 0.9;
+  }
+
+  60% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--aroma-drift), calc(var(--aroma-naik) * -1),
+      var(--space-none)) scale(1.35);
+  }
+}
+
+/* Tutup terangkat dan aroma menguap hanya saat botol dibuka. */
 .flacon[aria-pressed="true"] .botol-tutup-grup {
   transform: translateY(calc(var(--space-sm) * -1)) rotate(12deg);
 }
 
 .flacon[aria-pressed="true"] .aroma span {
-  opacity: 0.55;
-  transform: translateY(calc(var(--space-xl) * -1)) scale(1.1);
+  animation: aroma-menguap var(--aroma-durasi) var(--ease-glide) var(--aroma-tunda) infinite;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flacon[aria-pressed="true"] .aroma span {
+    animation: none;
+    opacity: 0.55;
+    transform: translate3d(var(--space-none), calc(var(--aroma-naik) * -0.35),
+      var(--space-none)) scale(0.9);
+    will-change: auto;
+  }
 }
 
 .botol {
@@ -676,6 +777,10 @@
 
 .botol-label {
   fill: var(--color-accent);
+}
+
+.botol-label-tanda {
+  fill: color-mix(in srgb, var(--color-card) 88%, var(--color-highlight));
 }
 
 .features {
