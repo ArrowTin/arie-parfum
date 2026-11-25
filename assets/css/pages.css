@@ -366,22 +366,6 @@
   color: var(--color-muted-foreground);
 }
 
-/* Muncul sekali saat masuk viewport; tanpa JS/reduced-motion tetap tampil. */
-.bisa-animasi .gallery-stage,
-.bisa-animasi .contact-card,
-.bisa-animasi .map-card {
-  opacity: 0;
-  transform: translateY(var(--motion-shift));
-}
-
-.bisa-animasi .is-muncul {
-  opacity: 1;
-  transform: none;
-}
-
-.bisa-animasi .contact-card:nth-child(2) { transition-delay: var(--motion-fast); }
-.bisa-animasi .map-card { transition-delay: var(--motion-base); }
-
 .map-actions {
   display: flex;
   flex-wrap: wrap;
@@ -424,6 +408,28 @@
   margin-top: var(--space-xs);
   color: var(--color-muted-foreground);
 }
+
+/* Muncul sekali saat masuk viewport; tanpa JS/reduced-motion tetap tampil. */
+.bisa-animasi .gallery-stage,
+.bisa-animasi .contact-card,
+.bisa-animasi .map-card,
+.bisa-animasi .step-card {
+  opacity: 0;
+  transform: translateY(var(--motion-shift));
+  transition: opacity var(--motion-glide) var(--ease-out),
+    transform var(--motion-glide) var(--ease-glide);
+}
+
+.bisa-animasi .is-muncul {
+  opacity: 1;
+  transform: none;
+}
+
+.bisa-animasi .contact-card:nth-child(2) { transition-delay: var(--motion-fast); }
+.bisa-animasi .map-card { transition-delay: var(--motion-base); }
+.bisa-animasi .step-card:nth-child(2) { transition-delay: var(--motion-fast); }
+.bisa-animasi .step-card:nth-child(3) { transition-delay: var(--motion-base); }
+.bisa-animasi .step-card:nth-child(4) { transition-delay: var(--motion-slow); }
 
 .faq-list {
   display: grid;

@@ -187,7 +187,7 @@ export function initChrome() {
 // Panggung galeri dan kartu kontak muncul halus sekali saat masuk viewport.
 export function initMuncul() {
   if (!bisaGerak()) return;
-  const sasaran = document.querySelectorAll(".gallery-stage, .contact-card, .map-card");
+  const sasaran = document.querySelectorAll(".gallery-stage, .contact-card, .map-card, .step-card");
   if (!sasaran.length) return;
 
   if (!("IntersectionObserver" in globalThis)) {

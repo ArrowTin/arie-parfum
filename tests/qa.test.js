@@ -145,6 +145,19 @@ test("panggung galeri dan kartu kontak menyatu dengan transisi aman", async () =
   assert.doesNotMatch(css, /#[0-9a-fA-F]{3,8}\b/);
 });
 
+test("kartu Cara Pesan muncul bergantian saat masuk viewport", async () => {
+  const html = await baca("../index.html");
+  const css = await baca("../assets/css/pages.css");
+  const js = await baca("../assets/js/main.js");
+  const daftar = /<ol class="step-grid">[\s\S]*?<\/ol>/.exec(html)?.[0] ?? "";
+  assert.equal((daftar.match(/class="step-card"/g) ?? []).length, 4);
+  assert.match(js, /querySelectorAll\("\.gallery-stage, \.contact-card, \.map-card, \.step-card"\)/);
+  assert.match(css, /\.bisa-animasi \.step-card \{[\s\S]*?opacity: 0;[\s\S]*?transition: opacity/);
+  assert.match(css, /\.bisa-animasi \.step-card:nth-child\(2\) \{ transition-delay: var\(--motion-fast\); \}/);
+  assert.match(css, /\.bisa-animasi \.step-card:nth-child\(4\) \{ transition-delay: var\(--motion-slow\); \}/);
+  assert.doesNotMatch(css, /#[0-9a-fA-F]{3,8}\b/);
+});
+
 test("zoom galeri, judul video, footer dan nav memakai transisi CSS", async () => {
   const css = await baca("../assets/css/components.css");
   const halaman = await baca("../assets/css/pages.css");
